@@ -1,0 +1,12 @@
+[
+   {
+      "_id":"findByUserTest",
+      "_class":"io.gravitee.repository.couchbase.management.internal.model.UserCouchbase",
+      "email":"creator@gravitee.io"
+   },
+   {
+      "_id":"user1",
+      "_class":"io.gravitee.repository.couchbase.management.internal.model.UserCouchbase",
+      "email":"creator2@gravitee.io"
+   }
+]

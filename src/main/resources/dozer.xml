@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+  <mapping> 
+    <class-a>io.gravitee.repository.management.model.User</class-a>
+    <class-b>io.gravitee.repository.couchbase.management.internal.model.UserCouchbase</class-b>
+    <field>
+      <a>username</a>
+      <b>name</b>
+    </field>
+  </mapping>
+
+  <mapping>
+    <class-a>io.gravitee.repository.management.model.Api</class-a>
+    <class-b>io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase</class-b>
+  </mapping>
+
+  <mapping>
+    <class-a>io.gravitee.repository.management.model.Membership</class-a>
+    <class-b>io.gravitee.repository.couchbase.management.internal.model.MembershipCouchbase</class-b>
+    <field>
+      <a>membershipType</a>
+      <b>type</b>
+    </field>
+  </mapping>
+  
+  <mapping> 
+    <class-a>io.gravitee.repository.management.model.Application</class-a>
+    <class-b>io.gravitee.repository.couchbase.management.internal.model.ApplicationCouchbase</class-b>
+  </mapping>
+
+</mappings> 
