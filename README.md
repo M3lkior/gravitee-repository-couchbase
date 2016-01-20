@@ -1,8 +1,8 @@
-[![Build Status](http://build.gravitee.io/jenkins/buildStatus/icon?job=gravitee-repository-mongodb)](http://build.gravitee.io/jenkins/view/Tous/job/gravitee-repository-mongodb/)
+[![Build Status](http://build.gravitee.io/jenkins/buildStatus/icon?job=gravitee-repository-couchbase)](http://build.gravitee.io/jenkins/view/Tous/job/gravitee-repository-couchbase/)
 
-# Gravitee Mongo Repository
+# Gravitee Couchbase Repository
 
-Mongo repository based on MongoDB
+Couchbase repository based on Couchbase
 
 ## Requirement
 
@@ -18,28 +18,28 @@ https://oss.sonatype.org/content/repositories/snapshots
 ## Building
 
 ```
-$ git clone https://github.com/gravitee-io/gravitee-repository-mongodb.git
-$ cd gravitee-repository-mongodb
+$ git clone https://github.com/gravitee-io/gravitee-repository-couchbase.git
+$ cd gravitee-repository-couchbase
 $ mvn clean package
 ```
 
 ## Installing
 
-Unzip the gravitee-repository-mongodb-1.0.0-SNAPSHOT.zip in the gravitee home directory.
+Unzip the gravitee-repository-couchbase-1.0.0-SNAPSHOT.zip in the gravitee home directory.
  
 
 
 ## Configuration
 
-repository.mongodb options : 
+repository.couchbase options : 
 
 | Parameter                                        |   default  |
 | ------------------------------------------------ | ---------: |
-| host                                             |  localhost |
-| port                                             |      9200  |
-| username                                         |            |
-| password                                         |            |
-| connectionPerHost                                |            |
+| hosts                                            |  			|
+| bucketname                                       |  	gravitee|
+| bucketpassword                                   |            |
+| connectTimeout                                   |            |
+| queryTimeout                               		|            |
 | connectTimeout                                   |            |
 | maxWaitTime                                      |            |
 | socketTimeout                                    |            |
