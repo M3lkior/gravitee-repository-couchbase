@@ -98,10 +98,10 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 	@Override
 	public ApiKey update(ApiKey key) throws TechnicalException {
 		ApiKeyCouchbase apiKey = internalApiKeyRepo.findOne(key.getKey());
-		apiKey.setCreatedAt(key.getCreatedAt().getTime());
+		apiKey.setCreatedAt(key.getCreatedAt());
 		apiKey.setExpiration(key.getExpiration());
 		apiKey.setRevoked(key.isRevoked());
-		apiKey.setRevokeAt(key.getRevokeAt().getTime());
+		apiKey.setRevokeAt(key.getRevokeAt());
 
 		internalApiKeyRepo.save(apiKey);
 		
@@ -125,5 +125,10 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 	public Set<ApiKey> findByApi(String apiId) {
 		Collection<ApiKeyCouchbase> apiKeysCb = internalApiKeyRepo.findByApi(apiId);
 		return map(apiKeysCb);
+	}
+
+	@Override
+	public void delete(String apiKey) throws TechnicalException {
+		internalApiKeyRepo.delete(apiKey);
 	}
 }

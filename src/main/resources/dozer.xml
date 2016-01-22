@@ -16,6 +16,7 @@
   <mapping>
     <class-a>io.gravitee.repository.management.model.Api</class-a>
     <class-b>io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase</class-b>
+    
   </mapping>
 
   <mapping>
@@ -24,6 +25,10 @@
     <field>
       <a>membershipType</a>
       <b>type</b>
+    </field>
+    <field>
+    	<a>user.username</a>
+    	<b>user</b>
     </field>
   </mapping>
   

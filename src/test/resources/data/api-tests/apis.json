@@ -1,13 +1,12 @@
 [
 	{
 		"_id" : "findByNameOk",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "findByNameOk",
 		"version" : "1",
 		"visibility" : "PRIVATE",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -22,13 +21,12 @@
     },	
 	{
 		"_id" : "findByTeamApiTest1",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "findByTeamApiTest1",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -37,22 +35,18 @@
 			},
 			{
 				"type":"USER",
-				"user":{
-					"$ref":"users",
-					"$id":"user1"
-				}
+				"user":"user1"
 			}
 		]
     },	
 	{
 		"_id" : "findByTeamApiTest2",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "findByTeamApiTest2",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -67,13 +61,12 @@
     },	
 	{
 		"_id" : "findByUserApiTest1",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "findByUserApiTest1",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -82,22 +75,18 @@
 			},
 			{
 				"type":"USER",
-				"user":{
-					"$ref":"users",
-					"$id":"user1"
-				}
+				"user":"user1"
 			}
 		]
 	},
 	{
 		"_id" : "findByUserApiTest2",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "findByUserApiTest2",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -112,13 +101,12 @@
 	},
 	{
 		"_id" : "api1",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "api1",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED",
 		"members": [
 			{
@@ -133,13 +121,12 @@
     },	
     {
 		"_id" : "api2",
-		"documentType": "api",
 		"_class" : "io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase",
 		"name" : "api2",
 		"version" : "1",
 		"visibility" : "PUBLIC",
-		"createdAt"  : { "$date" : 1439022010883 },
-		"updatedAt"  : { "$date" : 1439022010883 },
+		"createdAt"  : 1439022010883,
+		"updatedAt"  : 1439022010883,
 		"lifecycleState" : "STOPPED"
     }
 ]

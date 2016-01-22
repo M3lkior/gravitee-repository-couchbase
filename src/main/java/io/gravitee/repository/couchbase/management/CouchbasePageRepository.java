@@ -112,7 +112,7 @@ public class CouchbasePageRepository implements PageRepository {
 			pageCb.setName(page.getName());
 			pageCb.setContent(page.getContent());
 			pageCb.setLastContributor(page.getLastContributor());
-			pageCb.setUpdatedAt(page.getUpdatedAt().getTime());
+			pageCb.setUpdatedAt(page.getUpdatedAt());
 			pageCb.setOrder(page.getOrder());
 			pageCb.setPublished(page.isPublished());
 			

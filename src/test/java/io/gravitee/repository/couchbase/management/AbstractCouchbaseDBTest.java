@@ -29,15 +29,16 @@ import org.springframework.data.couchbase.core.CouchbaseTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.cluster.BucketSettings;
-import com.couchbase.client.java.cluster.ClusterManager;
-import com.couchbase.client.java.cluster.DefaultBucketSettings;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.error.DocumentAlreadyExistsException;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlQuery;
 
 import io.gravitee.repository.couchbase.management.config.util.CouchbaseTestContext;
 
@@ -56,6 +57,7 @@ import io.gravitee.repository.couchbase.management.config.util.CouchbaseTestCont
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestRepositoryConfiguration.class })
 @ActiveProfiles("test")
+@Transactional
 public abstract class AbstractCouchbaseDBTest {
 
     private static Logger LOG = LoggerFactory.getLogger(AbstractCouchbaseDBTest.class);
@@ -88,7 +90,8 @@ public abstract class AbstractCouchbaseDBTest {
                 pathname -> pathname.isFile()
                         && JSON_EXTENSION.equalsIgnoreCase(FilenameUtils.getExtension(pathname.toString())));
         
-        
+        template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
+
 //        ClusterManager cManager =cbCluster.clusterManager("Administrator", "password");
 //        if(!cManager.hasBucket(BUCKET_NAME)){
 //        	LOG.info("Creating bucket {}", BUCKET_NAME);
@@ -97,6 +100,8 @@ public abstract class AbstractCouchbaseDBTest {
 //            		.password("test")
 //            		.enableFlush(true)
 //            		.quota(100);
+//        			
+//        	
 //        	
 //        	cManager.insertBucket(bs);
 //        }else{
@@ -115,23 +120,35 @@ public abstract class AbstractCouchbaseDBTest {
     	}
     }
     
-    private void importJsonFile(File file) throws Exception {
-        
-        final String documentType = FilenameUtils.getBaseName(file.getName());
-        LOG.info("Inserting document of type {}", documentType);
-        
-        String jsonFileContent = FileUtils.readFileToString(file);
-        if(jsonFileContent.startsWith("[")){
-        JsonArray jsonArray = JsonArray.fromJson(jsonFileContent);
-        jsonArray.forEach(jsonObject -> {
-        	 JsonDocument document = JsonDocument.create(((JsonObject) jsonObject).getString("_id"), (JsonObject) jsonObject);
-        	 bucket.insert(document);
-        });
-        }else{
-        	JsonObject jsonObject = JsonObject.fromJson(jsonFileContent);
-        	JsonDocument document = JsonDocument.create(jsonObject.getString("_id"), jsonObject);
-
-        	bucket.insert(document);
+    private void importJsonFile(File file) {
+        try{
+	        final String documentType = FilenameUtils.getBaseName(file.getName());
+	        LOG.info("Inserting document of type {}", documentType);
+	        
+	        String jsonFileContent = FileUtils.readFileToString(file);
+	        if(jsonFileContent.startsWith("[")){
+	        JsonArray jsonArray = JsonArray.fromJson(jsonFileContent);
+	        jsonArray.forEach(jsonObject -> {
+	        	 JsonDocument document = JsonDocument.create(((JsonObject) jsonObject).getString("_id"), (JsonObject) jsonObject);
+	        	 if(!bucket.exists(document)){
+	        		 bucket.insert(document);
+	        	 }else{
+	        		 LOG.debug("Document already exist in bucket, skipping");
+	        	 }
+	        });
+	        }else{
+	        	JsonObject jsonObject = JsonObject.fromJson(jsonFileContent);
+	        	JsonDocument document = JsonDocument.create(jsonObject.getString("_id"), jsonObject);
+	        	if(!bucket.exists(document)){
+	        		bucket.insert(document);
+	        	}else{
+	        		 LOG.debug("Document already exist in bucket, skipping");
+	        	 }
+	        }
+        }catch(DocumentAlreadyExistsException e){
+        	LOG.debug("Document already exist in bucket, skipping");
+        }catch(Exception e){
+        	LOG.error("Fail to insert document : ", e);
         }
        
     }

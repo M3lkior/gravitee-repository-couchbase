@@ -77,8 +77,8 @@ public class CouchbaseApiRepository implements ApiRepository {
 	@Override
 	public Api create(Api api) throws TechnicalException {
 		ApiCouchbase apiCb = mapApi(api);
-		ApiCouchbase apiMongoCreated = internalApiRepo.save(apiCb);
-		return mapApi(apiMongoCreated);
+		ApiCouchbase apiCbCreated = internalApiRepo.save(apiCb);
+		return mapApi(apiCbCreated);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class CouchbaseApiRepository implements ApiRepository {
 		// Update, but don't change invariant other creation information
 		apiCb.setName(api.getName());
 		apiCb.setDescription(api.getDescription());
-		apiCb.setUpdatedAt(api.getUpdatedAt().getTime());
+		apiCb.setUpdatedAt(api.getUpdatedAt());
 		apiCb.setLifecycleState(api.getLifecycleState());
 		apiCb.setDefinition(api.getDefinition());
 		apiCb.setVisibility(api.getVisibility());
 		apiCb.setVersion(api.getVersion());
-
+		
 		ApiCouchbase applicationCbUpdated = internalApiRepo.save(apiCb);
 		return mapApi(applicationCbUpdated);
 	}
@@ -110,17 +110,23 @@ public class CouchbaseApiRepository implements ApiRepository {
 
 	@Override
 	public int countByUser(String username, MembershipType membershipType) throws TechnicalException {
-		return (membershipType == null) ?
-			internalApiRepo.countByUser(username, null) :
-				internalApiRepo.countByUser(username, membershipType);
+		return internalApiRepo.countByUser(username, membershipType);
 	}
 
 	@Override
 	public Set<Api> findByApplication(String applicationId) throws TechnicalException {
 		List<ApiKeyCouchbase> apiKeys = internalApiKeyRepo.findByApplication(applicationId);
-		return apiKeys.stream().map(t -> mapper.map(t.getApi(), Api.class)).collect(Collectors.toSet());
-	}
-
+		Set<Api> apis = new HashSet<Api>();
+		for(ApiKeyCouchbase apikey: apiKeys){
+			Optional<Api> api = findById(apikey.getApi());
+			if(api.isPresent()){
+				apis.add(api.get());
+			}
+		}
+		
+		return apis;
+}
+	
 	@Override
 	public void saveMember(String apiId, String username, MembershipType membershipType) throws TechnicalException {
 		ApiCouchbase api = internalApiRepo.findOne(apiId);
@@ -131,7 +137,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 			MembershipCouchbase member = new MembershipCouchbase();
 			member.setUser(user.getName());
 			member.setType(membershipType);
-			member.setCreatedAt(new Date().getTime());
+			member.setCreatedAt(new Date());
 			member.setUpdatedAt(member.getCreatedAt());
 
 			api.getMembers().add(member);
@@ -189,8 +195,8 @@ public class CouchbaseApiRepository implements ApiRepository {
 				Membership member = new Membership();
 				member.setUser(mapUser(internalUserRepo.findOne(membership.getUser())));
 				member.setMembershipType(membership.getType());
-				member.setCreatedAt(new Date(membership.getCreatedAt()));
-				member.setUpdatedAt(new Date(membership.getUpdatedAt()));
+				member.setCreatedAt(membership.getCreatedAt());
+				member.setUpdatedAt(membership.getUpdatedAt());
 				members.add(member);
 			}
 		}
@@ -201,12 +207,12 @@ public class CouchbaseApiRepository implements ApiRepository {
 	private User mapUser(final UserCouchbase userCb) {
 		final User user = new User();
 		user.setUsername(userCb.getName());
-		user.setCreatedAt(new Date(userCb.getCreatedAt()));
+		user.setCreatedAt(userCb.getCreatedAt());
 		user.setEmail(userCb.getEmail());
 		user.setFirstname(userCb.getFirstname());
 		user.setLastname(userCb.getLastname());
 		user.setPassword(userCb.getPassword());
-		user.setUpdatedAt(new Date(userCb.getUpdatedAt()));
+		user.setUpdatedAt(userCb.getUpdatedAt());
 		user.setRoles(new HashSet<>(userCb.getRoles()));
 		return user;
 	}

@@ -15,14 +15,17 @@
  */
 package io.gravitee.repository.couchbase.management.internal.api;
 
-import org.springframework.data.couchbase.repository.CouchbaseRepository;
+import org.springframework.data.couchbase.core.query.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
 
 @Repository
-public interface ApiCouchbaseRepository extends CouchbaseRepository<ApiCouchbase, String>, ApiCouchbaseRepositoryCustom {
-	
+public interface ApiCouchbaseRepository extends CrudRepository<ApiCouchbase, String>, ApiCouchbaseRepositoryCustom {
+		@Override
+		  @Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter}")
+		  Iterable<ApiCouchbase> findAll();
 }
 
 

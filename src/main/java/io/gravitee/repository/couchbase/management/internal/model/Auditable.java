@@ -15,6 +15,8 @@
  */
 package io.gravitee.repository.couchbase.management.internal.model;
 
+import java.util.Date;
+
 import com.couchbase.client.java.repository.annotation.Field;
 
 /**
@@ -22,21 +24,22 @@ import com.couchbase.client.java.repository.annotation.Field;
  */
 abstract class Auditable {
 	@Field
-    private Long createdAt;
+    private Date  createdAt;
 	@Field
-    private Long updatedAt;
-	public Long getCreatedAt() {
+    private Date  updatedAt;
+	public Date getCreatedAt() {
 		return createdAt;
 	}
-	public void setCreatedAt(Long createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	public Long getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-	public void setUpdatedAt(Long updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
 
    
 }

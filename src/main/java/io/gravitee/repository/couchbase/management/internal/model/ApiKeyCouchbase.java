@@ -54,9 +54,9 @@ public class ApiKeyCouchbase {
 	 */
 	private Date expiration;
 
-	private Long createdAt;
+	private Date  createdAt;
 
-	private Long revokeAt;
+	private Date  revokeAt;
 	
 	public String getKey() {
 		return key;
@@ -120,19 +120,19 @@ public class ApiKeyCouchbase {
         return sb.toString();
     }
 
-	public Long getCreatedAt() {
+	public Date  getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Long createdAt) {
+	public void setCreatedAt(Date  createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Long getRevokeAt() {
+	public Date  getRevokeAt() {
 		return revokeAt;
 	}
 
-	public void setRevokeAt(Long revokeAt) {
+	public void setRevokeAt(Date  revokeAt) {
 		this.revokeAt = revokeAt;
 	}
 }

@@ -76,7 +76,7 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 		// Update, but don't change invariant other creation information
 		applicationCb.setName(application.getName());
 		applicationCb.setDescription(application.getDescription());
-		applicationCb.setUpdatedAt(application.getUpdatedAt().getTime());
+		applicationCb.setUpdatedAt(application.getUpdatedAt());
 		applicationCb.setType(application.getType());
 
 		ApplicationCouchbase applicationMongoUpdated = internalApplicationRepo.save(applicationCb);
@@ -118,7 +118,7 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 			MembershipCouchbase memberCb = new MembershipCouchbase();
 			memberCb.setUser(userCb.getName());
 			memberCb.setType(membershipType);
-			memberCb.setCreatedAt(new Date().getTime());
+			memberCb.setCreatedAt(new Date());
 			memberCb.setUpdatedAt(memberCb.getCreatedAt());
 
 			applicationCb.getMembers().add(memberCb);
@@ -164,8 +164,8 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 				Membership member = new Membership();
 				member.setUser(mapUser(internalUserRepo.findOne(memberCb.getUser())));
 				member.setMembershipType(memberCb.getType());
-				member.setCreatedAt(new Date(memberCb.getCreatedAt()));
-				member.setUpdatedAt(new Date(memberCb.getUpdatedAt()));
+				member.setCreatedAt(memberCb.getCreatedAt());
+				member.setUpdatedAt(memberCb.getUpdatedAt());
 				members.add(member);
 			}
 		}
@@ -176,12 +176,12 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 	private User mapUser(final UserCouchbase userCb) {
 		final User user = new User();
 		user.setUsername(userCb.getName());
-		user.setCreatedAt(new Date(userCb.getCreatedAt()));
+		user.setCreatedAt(userCb.getCreatedAt());
 		user.setEmail(userCb.getEmail());
 		user.setFirstname(userCb.getFirstname());
 		user.setLastname(userCb.getLastname());
 		user.setPassword(userCb.getPassword());
-		user.setUpdatedAt(new Date(userCb.getUpdatedAt()));
+		user.setUpdatedAt(userCb.getUpdatedAt());
 		user.setRoles(new HashSet<>(userCb.getRoles()));
 		return user;
 	}

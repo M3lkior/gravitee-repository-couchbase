@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.gravitee.repository.management.api.ApiRepository;
 import io.gravitee.repository.management.api.UserRepository;
@@ -33,6 +35,8 @@ import io.gravitee.repository.management.model.MembershipType;
 import io.gravitee.repository.management.model.User;
 import io.gravitee.repository.management.model.Visibility;
 
+@Transactional
+@TransactionConfiguration(defaultRollback= false)
 public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 
 	private final static Logger logger = LoggerFactory.getLogger(ApiRepositoryTest.class);
@@ -99,6 +103,7 @@ public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 			Assert.fail("Error while calling findById");
 		}
 	}
+	
 	
 	@Test
 	public void findByIdMissingTest() {

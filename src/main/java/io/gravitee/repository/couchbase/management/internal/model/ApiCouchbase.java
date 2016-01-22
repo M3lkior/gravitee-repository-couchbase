@@ -33,7 +33,6 @@ public class ApiCouchbase extends Auditable {
     private String id;
 
     private String name;
-
     private String version;
 
     private String description;
@@ -136,4 +135,6 @@ public class ApiCouchbase extends Auditable {
 	public void setVisibility(Visibility visibility) {
 		this.visibility = visibility;
 	}
+
+	
 }
