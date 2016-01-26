@@ -26,13 +26,14 @@ public class PageCouchbaseRepositoryImpl implements PageCouchbaseRepositoryCusto
 	@Autowired
 	private CouchbaseTemplate cbTemplate;
 
-	public int findMaxPageOrderByApi(String apiId) {
-//		Query query = new Query();
-//		query.limit(1);
-//		query.with(new Sort(Sort.Direction.DESC, "order"));
-//		query.addCriteria(Criteria.where("api").is(apiId));
-//
-//		PageCouchbase page = cbTemplate.findOne(query, PageCouchbase.class);
-		return 0;//(page != null) ? page.getOrder() : 0;
-	}
+//	public int findMaxPageOrderByApi(String apiId) {
+//		
+////		Query query = new Query();
+////		query.limit(1);
+////		query.with(new Sort(Sort.Direction.DESC, "order"));
+////		query.addCriteria(Criteria.where("api").is(apiId));
+////
+////		PageCouchbase page = cbTemplate.findOne(query, PageCouchbase.class);
+//		return 0;//(page != null) ? page.getOrder() : 0;
+//	}
 }

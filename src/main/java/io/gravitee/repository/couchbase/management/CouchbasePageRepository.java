@@ -32,9 +32,6 @@ import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.PageRepository;
 import io.gravitee.repository.management.model.Page;
 
-/**
- * @author Titouan COMPIEGNE
- */
 @Component
 public class CouchbasePageRepository implements PageRepository {
 
@@ -139,7 +136,7 @@ public class CouchbasePageRepository implements PageRepository {
 	@Override
 	public Integer findMaxPageOrderByApi(String apiId) throws TechnicalException {
 		try{
-			return internalPageRepo.findMaxPageOrderByApi(apiId);
+			return internalPageRepo.findFirstByApiOrderByOrderDesc(apiId);
 		}catch(Exception e){
 			logger.error("An error occured when searching max order page for api name [{}]", apiId, e);
 			throw new TechnicalException("An error occured when searching max order page for api name");

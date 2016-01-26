@@ -20,5 +20,5 @@ package io.gravitee.repository.couchbase.management.internal.page;
  */
 public interface PageCouchbaseRepositoryCustom {
 
-	int findMaxPageOrderByApi(String apiId);
+	//int findMaxPageOrderByApi(String apiId);
 }

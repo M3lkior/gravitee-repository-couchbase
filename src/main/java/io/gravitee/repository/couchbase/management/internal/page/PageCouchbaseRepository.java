@@ -17,7 +17,6 @@ package io.gravitee.repository.couchbase.management.internal.page;
 
 import java.util.List;
 
-import org.springframework.data.couchbase.core.query.Query;
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,9 +28,9 @@ import io.gravitee.repository.couchbase.management.internal.model.PageCouchbase;
 @Repository
 public interface PageCouchbaseRepository extends CouchbaseRepository<PageCouchbase, String>, PageCouchbaseRepositoryCustom {
 
-	@Query("{ 'api' : ?0}")
 	List<PageCouchbase> findByApi(String apiName);
 
-	@Query("{ 'api' : ?0, 'published': true}")
-	List<PageCouchbase> findPublishedByApi(String apiName);
+	List<PageCouchbase> findIsPublishedByApi(String apiName);
+	int findFirstByApiOrderByOrderDesc(String apiId);
+	//int findFirstOrderByApiMaxPageOrderByApi(String apiId);
 }
