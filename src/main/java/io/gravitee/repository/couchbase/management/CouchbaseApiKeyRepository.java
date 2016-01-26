@@ -58,13 +58,7 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 			return Collections.emptySet();
 		}
 		
-		return apiKeys.stream().map(apiKeysCb -> {
-            ApiKey key = mapper.map(apiKeysCb.getKey(), ApiKey.class);
-            key.setApi(apiKeysCb.getKey());
-			key.setApplication(apiKeysCb.getApplication());
-
-            return key;
-        }).collect(Collectors.toSet());
+		return apiKeys.stream().map(apiKeysCb -> mapper.map(apiKeysCb, ApiKey.class)).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -85,10 +79,9 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 	@Override
 	//fixme test create
 	public ApiKey create(String applicationId, String apiId, ApiKey key) throws TechnicalException {
-		ApiKeyCouchbase apiKeysCb = new ApiKeyCouchbase();
-		apiKeysCb.setApi(internalApiRepo.findOne(apiId).getId());
+		ApiKeyCouchbase apiKeysCb = mapper.map(key, ApiKeyCouchbase.class);
 		apiKeysCb.setApplication(internalApplicationRepo.findOne(applicationId).getId());
-		apiKeysCb.setKey(mapper.map(key, ApiKeyCouchbase.class).getKey());
+		//apiKeysCb.setKey(mapper.map(key, ApiKeyCouchbase.class).getKey());
 		
 		internalApiKeyRepo.save(apiKeysCb);
 		
@@ -113,8 +106,7 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 		ApiKeyCouchbase apiKeyCb = internalApiKeyRepo.findOne(apiKey);
 
 		if(apiKeyCb != null) {
-			ApiKey retKey = mapper.map(apiKeyCb.getKey(), ApiKey.class);
-			retKey.setApi(apiKeyCb.getApi());
+			ApiKey retKey = mapper.map(apiKeyCb, ApiKey.class);
 			return Optional.of(retKey);
 		}
 		
