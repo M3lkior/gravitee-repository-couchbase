@@ -40,8 +40,6 @@ import com.couchbase.client.java.error.DocumentAlreadyExistsException;
 import com.couchbase.client.java.query.Index;
 import com.couchbase.client.java.query.N1qlQuery;
 
-import io.gravitee.repository.couchbase.management.config.util.CouchbaseTestContext;
-
 /**
  * Allows to start/stop an instance of MongoDB for each tests and inject a data set provided.
  * The data set must be a json array.
@@ -76,9 +74,9 @@ public abstract class AbstractCouchbaseDBTest {
 
     private static final String JSON_EXTENSION = "json";
     
-    private static CouchbaseTestContext ctx;
     
     @Before
+    @Transactional
     public void setup() throws Exception {
         LOG.info("Setup of Couchbase Cluster for Integration Test");
 
@@ -107,7 +105,6 @@ public abstract class AbstractCouchbaseDBTest {
 //        }else{
 //        	bucket.bucketManager().flush();
 //        }
-        
         
         importJsonFiles(collectionsDumps);
     }
