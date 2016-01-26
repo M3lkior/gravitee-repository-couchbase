@@ -7,45 +7,27 @@
 	   "members":[
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user0"
-	         }
+	         "member":"user0"
 	      },
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user1"
-	         }
+	         "member":"user1"
 	      },
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user2"
-	         }
+	         "member":"user2"
 	      },
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user3"
-	         }
+	         "member":"user3"
 	      },
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user4"
-	         }
+	         "member":"user4"
 	      },
 	      {
 	         "role":"MEMBER",
-	         "member":{
-	            "$ref":"users",
-	            "$id":"user5"
-	         }
+	         "member":"user5"
 	      }
 	   ]
 	}
