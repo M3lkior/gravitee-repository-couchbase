@@ -15,6 +15,7 @@
  */
 package io.gravitee.repository.couchbase.management.internal.application;
 
+import org.springframework.data.couchbase.core.query.Query;
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +23,9 @@ import io.gravitee.repository.couchbase.management.internal.model.ApplicationCou
 
 @Repository
 public interface ApplicationCouchbaseRepository extends CouchbaseRepository<ApplicationCouchbase, String>, ApplicationCouchbaseRepositoryCustom{
-
+	@Override
+	  @Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter}")
+	  Iterable<ApplicationCouchbase> findAll();
 }
 
 

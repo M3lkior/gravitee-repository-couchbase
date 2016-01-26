@@ -15,49 +15,80 @@
  */
 package io.gravitee.repository.couchbase.management.internal.application;
 
+import static com.couchbase.client.java.query.Select.select;
+import static com.couchbase.client.java.query.dsl.functions.AggregateFunctions.count;
+
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.couchbase.core.CouchbaseTemplate;
+import org.springframework.data.couchbase.repository.query.CountFragment;
+import org.springframework.data.couchbase.repository.query.support.N1qlUtils;
 
+import com.couchbase.client.java.document.json.JsonObject;
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.N1qlQueryResult;
+import com.couchbase.client.java.query.dsl.Expression;
+import com.couchbase.client.java.query.dsl.functions.Collections;
+import com.couchbase.client.java.query.dsl.path.AsPath;
+import com.couchbase.client.java.query.dsl.path.WherePath;
+
+import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
 import io.gravitee.repository.couchbase.management.internal.model.ApplicationCouchbase;
 import io.gravitee.repository.management.model.MembershipType;
 
 
 public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseRepositoryCustom {
-
+	private final static String MEMBERS_FIELD = "members";
+	private final static String MEMBER_FIELD = "member";
+	private final static String MEMBERS_USER_FIELD = MEMBER_FIELD + ".`user`";
+	private final static String MEMBERS_TYPE_FIELD = MEMBER_FIELD + ".type";
 	@Autowired
-	private CouchbaseTemplate cTemplate;
+	private CouchbaseTemplate cbTemplate;
 
 	@Override
 	public Collection<ApplicationCouchbase> findByUser(String username, MembershipType membershipType) {
-//		Query query = new Query();
-//
-//		if (membershipType == null) {
-//			query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("user.$id").is(username)));
-//		} else {
-//			query.addCriteria(Criteria.where("members").elemMatch(
-//					Criteria.where("user.$id").is(username)
-//							.and("type").is(membershipType)));
-//		}
-//
-//		return cTemplate.find(query, ApplicationCouchbase.class);
-		return null;
+		JsonObject parameters = JsonObject.create();
+		WherePath baseStatement = N1qlUtils.createSelectFromForEntity(cbTemplate.getCouchbaseBucket().name());
+		
+		
+		Expression memberExpression = null;
+		if (username != null) {
+			parameters.put("username",username);
+
+			if (membershipType == null) {
+				memberExpression = Collections.anyIn(MEMBER_FIELD, Expression.x(MEMBERS_FIELD)).satisfies(Expression.x(MEMBERS_USER_FIELD).eq(Expression.x("$username")));;
+			} else {
+				parameters.put("membershipType",membershipType.name());
+				memberExpression = Collections.anyIn(MEMBER_FIELD, Expression.x(MEMBERS_FIELD))
+						.satisfies(
+								Expression.x(MEMBERS_USER_FIELD).eq(Expression.x("$username"))
+								.and(Expression.x(MEMBERS_TYPE_FIELD).eq(Expression.x("$membershipType")))
+								);
+			}
+		}
+		
+		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(memberExpression), parameters);
+		return cbTemplate.findByN1QL(query, ApplicationCouchbase.class);
 	}
 
 	@Override
 	public int countByUser(String username, MembershipType membershipType) {
-//		Query query = new Query();
-//
-//		if (membershipType == null) {
-//			query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("user.$id").is(username)));
-//		} else {
-//			query.addCriteria(Criteria.where("members").elemMatch(
-//					Criteria.where("user.$id").is(username)
-//							.and("type").is(membershipType)));
-//		}
-//
-//		return (int) cTemplate.count(query, ApplicationCouchbase.class);
-		return 0;
+	
+		AsPath baseStatement = select(count("*").as(CountFragment.COUNT_ALIAS)).from(N1qlUtils.escapedBucket(cbTemplate.getCouchbaseBucket().name()));
+		
+		Expression e = Collections.anyIn(MEMBER_FIELD, Expression.x(MEMBERS_FIELD)).satisfies(Expression.x(MEMBERS_USER_FIELD).eq(Expression.x("$username")));;
+		JsonObject parameters = JsonObject.create().put("username",username);
+		if(membershipType != null){	
+			parameters.put("membershipType",membershipType.name());
+				e = Collections.anyIn(MEMBER_FIELD, Expression.x(MEMBERS_FIELD))
+						.satisfies(Expression.x(MEMBERS_USER_FIELD).eq(Expression.x("$username"))
+								.and(Expression.x(MEMBERS_TYPE_FIELD).eq(Expression.x("$membershipType"))));
+		}
+
+		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(e), parameters);
+		N1qlQueryResult result = cbTemplate.queryN1QL(query);
+		
+		return result.iterator().next().value().getInt(CountFragment.COUNT_ALIAS);
 	}
 }

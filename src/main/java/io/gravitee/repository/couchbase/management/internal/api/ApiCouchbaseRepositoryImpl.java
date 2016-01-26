@@ -38,7 +38,6 @@ import io.gravitee.repository.management.model.MembershipType;
 import io.gravitee.repository.management.model.Visibility;
 
 public class ApiCouchbaseRepositoryImpl implements ApiCouchbaseRepositoryCustom {
-	private final static String DOCUMENT_TYPE_FIELD = "documentType";
 	private final static String MEMBERS_FIELD = "members";
 	private final static String MEMBER_FIELD = "member";
 	private final static String MEMBERS_USER_FIELD = MEMBER_FIELD + ".`user`";
