@@ -20,6 +20,7 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,25 +89,16 @@ public abstract class AbstractCouchbaseDBTest {
                 pathname -> pathname.isFile()
                         && JSON_EXTENSION.equalsIgnoreCase(FilenameUtils.getExtension(pathname.toString())));
         
-        template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
+       
 
-//        ClusterManager cManager =cbCluster.clusterManager("Administrator", "password");
-//        if(!cManager.hasBucket(BUCKET_NAME)){
-//        	LOG.info("Creating bucket {}", BUCKET_NAME);
-//        	BucketSettings bs = new DefaultBucketSettings.Builder().
-//            		name(BUCKET_NAME)
-//            		.password("test")
-//            		.enableFlush(true)
-//            		.quota(100);
-//        			
-//        	
-//        	
-//        	cManager.insertBucket(bs);
-//        }else{
-//        	bucket.bucketManager().flush();
-//        }
-        
+        LOG.debug("Flushing bucket ...");
+        bucket.bucketManager().flush();
         importJsonFiles(collectionsDumps);
+    }
+    
+    @BeforeClass
+    public void setIndex(){
+    	 template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
     }
 
     private void importJsonFiles(File[] files) throws Exception {
