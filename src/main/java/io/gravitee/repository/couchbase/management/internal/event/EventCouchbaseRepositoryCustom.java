@@ -24,4 +24,6 @@ public interface EventCouchbaseRepositoryCustom {
     //Collection<EventCouchbase> findByType(Collection<String> types);
 
     Collection<EventCouchbase> findByProperty(String key, String value);
+
+	String getIdForEvent();
 }

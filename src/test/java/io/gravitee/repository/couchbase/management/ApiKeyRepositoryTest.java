@@ -56,7 +56,8 @@ public class ApiKeyRepositoryTest extends AbstractCouchbaseDBTest {
 	    	apiKey.setExpiration(new Date());
 
 	    	apiKeyRepository.create(applicationName, apiName, apiKey);
-	
+	    	//FIXME delete
+	    	Thread.sleep(100L);
 	    	Optional<ApiKey> optional = apiKeyRepository.retrieve(key);	
 	    	Assert.assertTrue("ApiKey not found", optional.isPresent());
 	    	

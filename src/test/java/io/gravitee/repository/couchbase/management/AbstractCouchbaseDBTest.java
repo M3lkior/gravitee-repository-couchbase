@@ -20,7 +20,6 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +37,6 @@ import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.error.DocumentAlreadyExistsException;
-import com.couchbase.client.java.query.Index;
-import com.couchbase.client.java.query.N1qlQuery;
 
 /**
  * Allows to start/stop an instance of MongoDB for each tests and inject a data set provided.
@@ -55,6 +52,7 @@ import com.couchbase.client.java.query.N1qlQuery;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestRepositoryConfiguration.class })
+
 @ActiveProfiles("test")
 @Transactional
 public abstract class AbstractCouchbaseDBTest {
@@ -80,8 +78,6 @@ public abstract class AbstractCouchbaseDBTest {
     @Transactional
     public void setup() throws Exception {
         LOG.info("Setup of Couchbase Cluster for Integration Test");
-
-       // mongoDatabase = ((MongoClient) mongoClient).getDatabase(DATABASE_NAME);
         
         final File file = new File(AbstractCouchbaseDBTest.class.getResource(getTestCasesPath()).toURI());
 
@@ -90,17 +86,15 @@ public abstract class AbstractCouchbaseDBTest {
                         && JSON_EXTENSION.equalsIgnoreCase(FilenameUtils.getExtension(pathname.toString())));
         
        
-
+        //template.queryN1QL( N1qlQuery.simple(Index.dropPrimaryIndex(bucket.name())));
+        //template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
         LOG.debug("Flushing bucket ...");
         bucket.bucketManager().flush();
+      
         importJsonFiles(collectionsDumps);
+       
     }
     
-    @BeforeClass
-    public void setIndex(){
-    	 template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
-    }
-
     private void importJsonFiles(File[] files) throws Exception {
     	if(files != null){
     		for (File file : files) {

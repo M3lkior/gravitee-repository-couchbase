@@ -104,4 +104,6 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
     public AbstractPlatformTransactionManager graviteeTransactionManager() {
         return new NoTransactionManager();
     }
+
+
 }

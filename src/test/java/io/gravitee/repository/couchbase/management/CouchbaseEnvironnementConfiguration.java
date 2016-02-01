@@ -15,11 +15,13 @@
  */
 package io.gravitee.repository.couchbase.management;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
+import org.springframework.context.annotation.PropertySource;
+
+import com.couchbase.client.java.env.CouchbaseEnvironment;
 
 import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
@@ -27,24 +29,27 @@ import io.gravitee.repository.couchbase.common.CouchbaseFactory;
 
 @Configuration
 @ComponentScan
-@EnableCouchbaseRepositories(basePackages={"io.gravitee.repository.couchbase.management.internal"})
-@Profile("!test")
-public class ManagementRepositoryConfiguration extends AbstractRepositoryConfiguration {
+@PropertySource("classpath:gravitee-environnement.yml")
+public class CouchbaseEnvironnementConfiguration extends AbstractRepositoryConfiguration {
 
-//	@Autowired
-//	@Qualifier("managementCouchbase")
-//	private Bucket bucket;
-
-	@Bean(name = "managementCouchbase")
-	public static CouchbaseFactory couchbaseFactory() {
-		return new CouchbaseFactory(Scope.MANAGEMENT.getName());
-	}
-
+	
 	
 	@Override
 	protected String getScope() {
 		return Scope.MANAGEMENT.getName();
 	}
-
 	
+	@Bean
+	protected CouchbaseFactory couchbaseFactory(){
+		return new CouchbaseFactory(getScope());
+	}
+	@Autowired
+	private CouchbaseFactory cbFactory;
+	
+	@Bean
+	  protected CouchbaseEnvironment getEnvironment() {
+	    return cbFactory.builder()
+	        .build();
+	  }
+
 }

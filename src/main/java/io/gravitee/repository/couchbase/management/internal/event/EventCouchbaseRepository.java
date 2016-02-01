@@ -18,11 +18,9 @@ package io.gravitee.repository.couchbase.management.internal.event;
 import java.util.Collection;
 
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
-import org.springframework.stereotype.Repository;
 
 import io.gravitee.repository.couchbase.management.internal.model.EventCouchbase;
 
-@Repository
 public interface EventCouchbaseRepository extends CouchbaseRepository<EventCouchbase, String>, EventCouchbaseRepositoryCustom {
 	 public Collection<EventCouchbase> findByTypeIn(Collection<String> types);
 }

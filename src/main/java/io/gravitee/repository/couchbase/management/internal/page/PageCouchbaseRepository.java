@@ -18,14 +18,8 @@ package io.gravitee.repository.couchbase.management.internal.page;
 import java.util.List;
 
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
-import org.springframework.stereotype.Repository;
 
 import io.gravitee.repository.couchbase.management.internal.model.PageCouchbase;
-
-/**
- * @author Titouan COMPIEGNE
- */
-@Repository
 public interface PageCouchbaseRepository extends CouchbaseRepository<PageCouchbase, String>, PageCouchbaseRepositoryCustom {
 
 	List<PageCouchbase> findByApi(String apiName);

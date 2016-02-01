@@ -15,16 +15,18 @@
  */
 package io.gravitee.repository.couchbase.management;
 
-import io.gravitee.repository.management.api.UserRepository;
-import io.gravitee.repository.management.model.User;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-import java.util.Set;
+import io.gravitee.repository.management.api.UserRepository;
+import io.gravitee.repository.management.model.User;
 
 public class UserRepositoryTest extends AbstractCouchbaseDBTest {
 
@@ -46,6 +48,7 @@ public class UserRepositoryTest extends AbstractCouchbaseDBTest {
 			User user = new User();
 			user.setUsername(username);
 			user.setEmail(String.format("%s@gravitee.io", username));
+			user.setCreatedAt(new Date());
 			User userCreated =  userRepository.create(user);
 			
 			Assert.assertNotNull("User created is null", userCreated);

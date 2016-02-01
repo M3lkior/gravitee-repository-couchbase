@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,9 @@ public class CouchbaseEventRepository implements EventRepository {
         logger.debug("Create event [{}]", event.getId());
 
         EventCouchbase eventCb = mapper.map(event, EventCouchbase.class);
+        if(StringUtils.isEmpty(eventCb.getId())){
+        	eventCb.setId(internalEventRepo.getIdForEvent());
+        }
         EventCouchbase createdEventMongo = internalEventRepo.save(eventCb);
 
         Event res = mapper.map(createdEventMongo, Event.class);

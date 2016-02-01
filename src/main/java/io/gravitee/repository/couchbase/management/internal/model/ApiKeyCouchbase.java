@@ -27,6 +27,8 @@ import com.couchbase.client.java.repository.annotation.Id;
  */
 @Document
 public class ApiKeyCouchbase {
+	@Id
+	private String id;
 	/**
 	 * The API for which the key is defined.
 	 */
@@ -41,7 +43,6 @@ public class ApiKeyCouchbase {
 	/**
 	 * Api Key
 	 */
-	@Id
 	private String key;
 
 	/**
@@ -134,5 +135,13 @@ public class ApiKeyCouchbase {
 
 	public void setRevokeAt(Date  revokeAt) {
 		this.revokeAt = revokeAt;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

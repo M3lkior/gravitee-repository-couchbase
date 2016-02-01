@@ -45,7 +45,7 @@ public class EventRepositoryTest extends AbstractCouchbaseDBTest {
     public void createEventTest() {
         try {
             Event event = new Event();
-            event.setId("event-test");
+            //event.setId("event-test");
             event.setType(EventType.PUBLISH_API);
             event.setPayload("{}");
             event.setParentId(null);

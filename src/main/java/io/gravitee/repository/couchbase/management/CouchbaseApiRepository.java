@@ -100,6 +100,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 
 	@Override
 	public void delete(String apiId) throws TechnicalException {
+		//FIXME also delete apiKey ?
 		internalApiRepo.delete(apiId);
 	}
 

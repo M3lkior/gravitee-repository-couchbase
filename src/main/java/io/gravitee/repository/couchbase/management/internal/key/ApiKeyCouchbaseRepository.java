@@ -18,18 +18,18 @@ package io.gravitee.repository.couchbase.management.internal.key;
 import java.util.List;
 
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
-import org.springframework.stereotype.Repository;
 
 import io.gravitee.repository.couchbase.management.internal.model.ApiKeyCouchbase;
 
-@Repository
-public interface ApiKeyCouchbaseRepository extends CouchbaseRepository<ApiKeyCouchbase, String> {
+public interface ApiKeyCouchbaseRepository extends CouchbaseRepository<ApiKeyCouchbase, String>, ApiKeyCouchbaseRepositoryCustom {
 
 	List<ApiKeyCouchbase> findByApplicationAndApi(String applicationId, String apiId);
 
 	List<ApiKeyCouchbase> findByApplication(String applicationId);
 
 	List<ApiKeyCouchbase> findByApi(String apiId);
+
+	ApiKeyCouchbase findByKey(String apiKey);
 }
 
 

@@ -1,6 +1,6 @@
 [
 	{
-		"_id": "d449098d-8c31-4275-ad59-8dd707865a33",
+		"_id": "apikey::d449098d-8c31-4275-ad59-8dd707865a33",
 		"_class":"io.gravitee.repository.couchbase.management.internal.model.ApiKeyCouchbase",
 		"key":"d449098d-8c31-4275-ad59-8dd707865a33",
 		"revoked":false,
@@ -9,7 +9,7 @@
 		"api": "api1" 
 	},
 	{
-		"_id": "d449098d-8c31-4275-ad59-8dd707865a34",
+		"_id": "apikey::d449098d-8c31-4275-ad59-8dd707865a34",
 		"_class":"io.gravitee.repository.couchbase.management.internal.model.ApiKeyCouchbase",
 			"key":"d449098d-8c31-4275-ad59-8dd707865a34",
 			"revoked":false,
@@ -18,7 +18,7 @@
 		"api": "api2"
 	},
 	{
-		"_id": "d449098d-8c31-4275-ad59-8dd707865a35",
+		"_id": "apikey::d449098d-8c31-4275-ad59-8dd707865a35",
 		"_class":"io.gravitee.repository.couchbase.management.internal.model.ApiKeyCouchbase",
 			"key":"d449098d-8c31-4275-ad59-8dd707865a35",
 			"revoked":false,

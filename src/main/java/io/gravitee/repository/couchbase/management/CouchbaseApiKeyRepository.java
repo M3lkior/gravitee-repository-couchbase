@@ -38,7 +38,6 @@ import io.gravitee.repository.management.model.ApiKey;
 
 @Component
 public class CouchbaseApiKeyRepository implements ApiKeyRepository {
-
 	private final static Logger logger = LoggerFactory.getLogger(CouchbaseApiKeyRepository.class);
 
 	@Autowired
@@ -48,7 +47,7 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 	private ApiKeyCouchbaseRepository internalApiKeyRepo;
 	
 	@Autowired
-	private ApiCouchbaseRepository internalApiRepo;	
+	private ApiCouchbaseRepository internalApiRepo;
 	
 	@Autowired
 	private ApplicationCouchbaseRepository internalApplicationRepo;
@@ -77,11 +76,11 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 
 
 	@Override
-	//fixme test create
 	public ApiKey create(String applicationId, String apiId, ApiKey key) throws TechnicalException {
 		ApiKeyCouchbase apiKeysCb = mapper.map(key, ApiKeyCouchbase.class);
+		apiKeysCb.setId(internalApiKeyRepo.getIdForApiKey());
 		apiKeysCb.setApplication(internalApplicationRepo.findOne(applicationId).getId());
-		//apiKeysCb.setKey(mapper.map(key, ApiKeyCouchbase.class).getKey());
+		apiKeysCb.setApi(internalApiRepo.findOne(apiId).getId());
 		
 		internalApiKeyRepo.save(apiKeysCb);
 		
@@ -90,7 +89,7 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 
 	@Override
 	public ApiKey update(ApiKey key) throws TechnicalException {
-		ApiKeyCouchbase apiKey = internalApiKeyRepo.findOne(key.getKey());
+		ApiKeyCouchbase apiKey = internalApiKeyRepo.findByKey(key.getKey());
 		apiKey.setCreatedAt(key.getCreatedAt());
 		apiKey.setExpiration(key.getExpiration());
 		apiKey.setRevoked(key.isRevoked());
@@ -103,7 +102,7 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 
 	@Override
 	public Optional<ApiKey> retrieve(String apiKey) throws TechnicalException {
-		ApiKeyCouchbase apiKeyCb = internalApiKeyRepo.findOne(apiKey);
+		ApiKeyCouchbase apiKeyCb = internalApiKeyRepo.findByKey(apiKey);
 
 		if(apiKeyCb != null) {
 			ApiKey retKey = mapper.map(apiKeyCb, ApiKey.class);
@@ -123,4 +122,6 @@ public class CouchbaseApiKeyRepository implements ApiKeyRepository {
 	public void delete(String apiKey) throws TechnicalException {
 		internalApiKeyRepo.delete(apiKey);
 	}
+	
+	
 }

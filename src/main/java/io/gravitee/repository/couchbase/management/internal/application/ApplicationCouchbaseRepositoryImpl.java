@@ -33,7 +33,6 @@ import com.couchbase.client.java.query.dsl.functions.Collections;
 import com.couchbase.client.java.query.dsl.path.AsPath;
 import com.couchbase.client.java.query.dsl.path.WherePath;
 
-import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
 import io.gravitee.repository.couchbase.management.internal.model.ApplicationCouchbase;
 import io.gravitee.repository.management.model.MembershipType;
 
@@ -50,7 +49,6 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 	public Collection<ApplicationCouchbase> findByUser(String username, MembershipType membershipType) {
 		JsonObject parameters = JsonObject.create();
 		WherePath baseStatement = N1qlUtils.createSelectFromForEntity(cbTemplate.getCouchbaseBucket().name());
-		
 		
 		Expression memberExpression = null;
 		if (username != null) {

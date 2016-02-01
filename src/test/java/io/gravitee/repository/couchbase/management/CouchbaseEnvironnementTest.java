@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,11 +42,11 @@ import com.couchbase.client.java.bucket.BucketInfo;
  * @author Azize Elamrani (azize dot elamrani at gmail dot com)
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestRepositoryConfiguration.class })
+@ContextConfiguration(classes = { CouchbaseEnvironnementConfiguration.class })
 @ActiveProfiles("test")
-public class TextCbConfiguration {
+public class CouchbaseEnvironnementTest {
 
-    private static Logger LOG = LoggerFactory.getLogger(TextCbConfiguration.class);
+    private static Logger LOG = LoggerFactory.getLogger(CouchbaseEnvironnementTest.class);
     
     @Autowired
     Bucket b;
