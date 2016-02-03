@@ -37,6 +37,8 @@ import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.error.DocumentAlreadyExistsException;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlQuery;
 
 /**
  * Allows to start/stop an instance of MongoDB for each tests and inject a data set provided.
@@ -82,7 +84,7 @@ public abstract class AbstractCouchbaseDBTest {
                         && JSON_EXTENSION.equalsIgnoreCase(FilenameUtils.getExtension(pathname.toString())));
        
         //template.queryN1QL( N1qlQuery.simple(Index.dropPrimaryIndex(bucket.name())));
-        //template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
+        template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
         LOG.debug("Flushing bucket ...");
         bucket.bucketManager().flush();
       
