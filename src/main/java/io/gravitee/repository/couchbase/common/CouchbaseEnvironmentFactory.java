@@ -15,25 +15,29 @@
  */
 package io.gravitee.repository.couchbase.common;
 
-import java.util.concurrent.TimeUnit;
-
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
-import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
  * Factory use to build {@link DefaultCouchbaseEnvironment} thanks to gravitee.yml properties file
  * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
  */
-public class CouchbaseEnvironmentFactory {
+public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnvironment> {
+
 	private final static String PREFIX_FORMAT = "%s.couchbase.";
 	
     private final Logger logger = LoggerFactory.getLogger(CouchbaseEnvironmentFactory.class);
 
+    @Autowired
     private Environment environment;
 
     private final String propertyPrefix;
@@ -46,7 +50,7 @@ public class CouchbaseEnvironmentFactory {
      * @see <a href="http://docs.couchbase.com/developer/java-2.1/env-config.html">env-config</a>
      * @return
      */
-    public DefaultCouchbaseEnvironment build() {
+    public CouchbaseEnvironment build() {
     	DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment.builder();
 
     	//Bootstrapping options
@@ -158,8 +162,6 @@ public class CouchbaseEnvironmentFactory {
         return builder.build();
     }
 
-   
-
     private String readPropertyValue(String propertyName) {
         return readPropertyValue(propertyName, String.class, null);
     }
@@ -174,13 +176,18 @@ public class CouchbaseEnvironmentFactory {
         return value;
     }
 
-  
-	public Environment getEnvironment() {
-		return environment;
-	}
+    @Override
+    public CouchbaseEnvironment getObject() throws Exception {
+        return build();
+    }
 
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
-	}
+    @Override
+    public Class<?> getObjectType() {
+        return CouchbaseEnvironment.class;
+    }
 
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 }

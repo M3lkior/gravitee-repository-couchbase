@@ -20,9 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import io.gravitee.repository.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -46,12 +48,19 @@ import io.gravitee.repository.couchbase.management.transaction.NoTransactionMana
  */
 public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseConfiguration {
 	private final static Logger logger = LoggerFactory.getLogger(AbstractRepositoryConfiguration.class);
-    
 
 	@Autowired
     private Environment environment;
 
-   
+	@Autowired
+	@Qualifier("managementCouchbase")
+	private CouchbaseEnvironment couchbaseEnvironment;
+
+	@Bean(name = "managementCouchbase")
+	public static CouchbaseEnvironmentFactory couchbaseEnvironmentFactory() {
+		return new CouchbaseEnvironmentFactory(Scope.MANAGEMENT.getName());
+	}
+
 	protected abstract String getScope();
 
 	
@@ -60,17 +69,12 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 	*/
 	@Override
 	  protected CouchbaseEnvironment getEnvironment() {
-		CouchbaseEnvironmentFactory cbEnvironmentFactory = new CouchbaseEnvironmentFactory(getScope());
-		cbEnvironmentFactory.setEnvironment(environment);
-		
-	    return cbEnvironmentFactory.build();
-	
-	  } 
+		return couchbaseEnvironment;
+	  }
 	
 	
 	@Override
 	protected List<String> getBootstrapHosts() {
-		
 		String hostsAsString = environment.getProperty(getScope() + ".couchbase.hosts", "gravitee");
     	return Arrays.asList(StringUtils.commaDelimitedListToStringArray(hostsAsString));
 	}
