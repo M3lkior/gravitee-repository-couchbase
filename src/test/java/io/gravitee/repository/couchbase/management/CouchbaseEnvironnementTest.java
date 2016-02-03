@@ -15,49 +15,42 @@
  */
 package io.gravitee.repository.couchbase.management;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.bucket.BucketInfo;
+import com.couchbase.client.java.env.CouchbaseEnvironment;
 
 /**
- * Allows to start/stop an instance of MongoDB for each tests and inject a data set provided.
- * The data set must be a json array.
- * The setup phase create a database and a collection named as the file.
+ * Testing class for Couchbase Environment configuration
+ * 
+ * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
  *
- * Example:
- * If the file provided path is:"/data/apis.json", for each test the setup will create a database and a collection
- * named "apis" with the file data set, execute the test, and then shut down.
- *
- *
- * @author Azize Elamrani (azize dot elamrani at gmail dot com)
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { CouchbaseEnvironnementConfiguration.class })
 @ActiveProfiles("test")
 public class CouchbaseEnvironnementTest {
+	private final static String KEY_PREFIX= "management.couchbase.";
 
     private static Logger LOG = LoggerFactory.getLogger(CouchbaseEnvironnementTest.class);
     
     @Autowired
-    Bucket b;
+    CouchbaseEnvironment couchbaseEnvironment;
     
     @Autowired
-    BucketInfo bi;
+    Environment env;
     
     @Test
-    public void testBucket(){
-    	Assert.notNull(b);
-    	
+    public void testCouchbaseEnvironment(){
+    	Assert.assertEquals("kvTimeout problem", (Long) env.getProperty(KEY_PREFIX + "kvTimeout", Long.class), (Long) couchbaseEnvironment.kvTimeout());
     }
    
 }

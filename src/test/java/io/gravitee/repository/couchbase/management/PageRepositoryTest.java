@@ -54,7 +54,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
 
         	Page pageCreated = pageRepository.create(page);
 
-            Assert.assertEquals("Invalid saved page type.", "md", pageCreated.getType());
+            Assert.assertEquals("Invalid saved page type.", PageType.MARKDOWN, pageCreated.getType());
             
             Optional<Page> pageReturned = pageRepository.findById(pageCreated.getId());
             Assert.assertTrue("Page not found, actual", pageReturned.isPresent());
@@ -68,6 +68,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
     }
 
     @Test
+    //TODO
     public void findByIdTest() {
         try {
             Optional<Page> page = pageRepository.findById("page1");
@@ -80,6 +81,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
     }
 
     @Test
+    //TODO
     public void findByApi() {
         try {
             String apiId = "api1";
@@ -95,6 +97,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
     }
     
     @Test
+    //TODO
     public void findPublishedByApi() {
         try {
             String apiId = "api1";
@@ -111,6 +114,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
     }
     
     @Test
+    //TODO
     public void findMaxPageOrderByApi() {
         try {
             String apiId = "api1";

@@ -15,44 +15,38 @@
  */
 package io.gravitee.repository.couchbase.common;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 
 /**
- * @author Ludovic DUSSART (ludovic.dussart.pro at gmail.com)
+ * 
+ * Factory use to build {@link DefaultCouchbaseEnvironment} thanks to gravitee.yml properties file
+ * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
  */
-public class CouchbaseFactory implements FactoryBean<Bucket> {
+public class CouchbaseEnvironmentFactory {
+	private final static String PREFIX_FORMAT = "%s.couchbase.";
+	
+    private final Logger logger = LoggerFactory.getLogger(CouchbaseEnvironmentFactory.class);
 
-    private final Logger logger = LoggerFactory.getLogger(CouchbaseFactory.class);
-
-    @Autowired
     private Environment environment;
 
     private final String propertyPrefix;
 
-    public CouchbaseFactory(String propertyPrefix) {
-        this.propertyPrefix = propertyPrefix + ".couchbase.";
+    public CouchbaseEnvironmentFactory(String propertyPrefix) {
+        this.propertyPrefix = String.format(PREFIX_FORMAT, propertyPrefix);
     }
     
     /**
      * @see <a href="http://docs.couchbase.com/developer/java-2.1/env-config.html">env-config</a>
      * @return
      */
-    public DefaultCouchbaseEnvironment.Builder builder() {
+    public DefaultCouchbaseEnvironment build() {
     	DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment.builder();
 
     	//Bootstrapping options
@@ -161,23 +155,10 @@ public class CouchbaseFactory implements FactoryBean<Bucket> {
         if(responseBufferSize != null)
         	builder.responseBufferSize(responseBufferSize);
         
-        return builder;
+        return builder.build();
     }
 
-    @Override
-    public Bucket getObject() throws Exception {
-    	
-    	List<String> bootstrapHosts= Arrays.asList(
-        			org.springframework.util.StringUtils.commaDelimitedListToStringArray(readPropertyValue(propertyPrefix + "hosts", String.class)
-        					));
-    	String bucketName =  readPropertyValue(propertyPrefix + "bucketname", String.class, "gravitee");
-    	String bucketPassword = readPropertyValue(propertyPrefix + "bucketpassword", String.class);
-
-        CouchbaseEnvironment options = builder().build();
-
-        Cluster cluster = CouchbaseCluster.create(options, bootstrapHosts);
-        return cluster.openBucket(bucketName, bucketPassword);
-    }
+   
 
     private String readPropertyValue(String propertyName) {
         return readPropertyValue(propertyName, String.class, null);
@@ -193,13 +174,13 @@ public class CouchbaseFactory implements FactoryBean<Bucket> {
         return value;
     }
 
-    @Override
-    public Class<?> getObjectType() {
-        return Bucket.class;
-    }
+  
+	public Environment getEnvironment() {
+		return environment;
+	}
 
-    @Override
-    public boolean isSingleton() {
-        return true;
-    }
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
 }

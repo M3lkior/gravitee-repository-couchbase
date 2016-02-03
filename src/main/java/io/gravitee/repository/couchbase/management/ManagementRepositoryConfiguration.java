@@ -15,7 +15,6 @@
  */
 package io.gravitee.repository.couchbase.management;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,7 +22,6 @@ import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepos
 
 import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
-import io.gravitee.repository.couchbase.common.CouchbaseFactory;
 
 @Configuration
 @ComponentScan
@@ -31,20 +29,13 @@ import io.gravitee.repository.couchbase.common.CouchbaseFactory;
 @Profile("!test")
 public class ManagementRepositoryConfiguration extends AbstractRepositoryConfiguration {
 
-//	@Autowired
-//	@Qualifier("managementCouchbase")
-//	private Bucket bucket;
-
-	@Bean(name = "managementCouchbase")
-	public static CouchbaseFactory couchbaseFactory() {
-		return new CouchbaseFactory(Scope.MANAGEMENT.getName());
-	}
-
-	
 	@Override
 	protected String getScope() {
 		return Scope.MANAGEMENT.getName();
 	}
+
+
+	
 
 	
 }

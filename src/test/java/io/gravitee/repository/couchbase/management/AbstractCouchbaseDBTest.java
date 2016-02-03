@@ -52,9 +52,7 @@ import com.couchbase.client.java.error.DocumentAlreadyExistsException;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestRepositoryConfiguration.class })
-
 @ActiveProfiles("test")
-@Transactional
 public abstract class AbstractCouchbaseDBTest {
 
     private static Logger LOG = LoggerFactory.getLogger(AbstractCouchbaseDBTest.class);
@@ -78,13 +76,10 @@ public abstract class AbstractCouchbaseDBTest {
     @Transactional
     public void setup() throws Exception {
         LOG.info("Setup of Couchbase Cluster for Integration Test");
-        
         final File file = new File(AbstractCouchbaseDBTest.class.getResource(getTestCasesPath()).toURI());
-
         File[] collectionsDumps = file.listFiles(
                 pathname -> pathname.isFile()
                         && JSON_EXTENSION.equalsIgnoreCase(FilenameUtils.getExtension(pathname.toString())));
-        
        
         //template.queryN1QL( N1qlQuery.simple(Index.dropPrimaryIndex(bucket.name())));
         //template.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));

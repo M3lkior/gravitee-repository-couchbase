@@ -35,12 +35,14 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+
 import io.gravitee.repository.couchbase.management.mapper.GraviteeDozerMapper;
 import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
 import io.gravitee.repository.couchbase.management.transaction.NoTransactionManager;
 
 /**
- * @author Ludovic DUSSART (ludovicdussartpro at gmail.com)
+ * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
  */
 public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseConfiguration {
 	private final static Logger logger = LoggerFactory.getLogger(AbstractRepositoryConfiguration.class);
@@ -51,14 +53,25 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 
    
 	protected abstract String getScope();
+
 	
-  
-	  
+	/**
+	 * Overriding getEnvironment() method to customize {@link CouchbaseEnvironment}
+	*/
+	@Override
+	  protected CouchbaseEnvironment getEnvironment() {
+		CouchbaseEnvironmentFactory cbEnvironmentFactory = new CouchbaseEnvironmentFactory(getScope());
+		cbEnvironmentFactory.setEnvironment(environment);
+		
+	    return cbEnvironmentFactory.build();
+	
+	  } 
+	
+	
 	@Override
 	protected List<String> getBootstrapHosts() {
 		
 		String hostsAsString = environment.getProperty(getScope() + ".couchbase.hosts", "gravitee");
-		logger.debug("Getting Couchbase host : {}",hostsAsString );
     	return Arrays.asList(StringUtils.commaDelimitedListToStringArray(hostsAsString));
 	}
 
@@ -70,16 +83,22 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 	@Override
 	protected String getBucketPassword() {
 		String password = environment.getProperty(getScope() + ".couchbase.bucketpassword", "");
-		logger.debug("bucket password : {}", password);
 		return password;
 	}
+	
+	
+	@Override
+    protected String getMappingBasePackage() {
+        return getClass().getPackage().getName();
+    }
+	
 
     @Bean
     public GraviteeMapper graviteeMapper() {
         return new GraviteeDozerMapper();
     }
 
-
+    @Override
     protected Set<Class<?>> getInitialEntitySet() throws ClassNotFoundException {
 
         String basePackage = getMappingBasePackage();
