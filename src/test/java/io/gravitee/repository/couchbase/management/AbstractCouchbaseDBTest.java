@@ -89,6 +89,8 @@ public abstract class AbstractCouchbaseDBTest {
         bucket.bucketManager().flush();
       
         importJsonFiles(collectionsDumps);
+        //workaround to avoid select before inserts commits ...
+        Thread.sleep(1000L);
        
     }
     
@@ -100,6 +102,7 @@ public abstract class AbstractCouchbaseDBTest {
     	}
     }
     
+    @Transactional
     private void importJsonFile(File file) {
         try{
 	        final String documentType = FilenameUtils.getBaseName(file.getName());
@@ -107,19 +110,21 @@ public abstract class AbstractCouchbaseDBTest {
 	        
 	        String jsonFileContent = FileUtils.readFileToString(file);
 	        if(jsonFileContent.startsWith("[")){
-	        JsonArray jsonArray = JsonArray.fromJson(jsonFileContent);
-	        jsonArray.forEach(jsonObject -> {
-	        	 JsonDocument document = JsonDocument.create(((JsonObject) jsonObject).getString("_id"), (JsonObject) jsonObject);
-	        	 if(!bucket.exists(document)){
-	        		 bucket.insert(document);
-	        	 }else{
-	        		 LOG.debug("Document already exist in bucket, skipping");
-	        	 }
-	        });
+		        JsonArray jsonArray = JsonArray.fromJson(jsonFileContent);
+		        jsonArray.forEach(jsonObject -> {
+		        	String id = ((JsonObject) jsonObject).getString("_id");
+		        	 JsonDocument document = JsonDocument.create(id, (JsonObject) jsonObject);
+		        	 if(!bucket.exists(id)){
+		        		 bucket.insert(document);
+		        	 }else{
+		        		 LOG.debug("Document already exist in bucket, skipping");
+		        	 }
+		        });
 	        }else{
 	        	JsonObject jsonObject = JsonObject.fromJson(jsonFileContent);
-	        	JsonDocument document = JsonDocument.create(jsonObject.getString("_id"), jsonObject);
-	        	if(!bucket.exists(document)){
+	        	String id = jsonObject.getString("_id");
+	        	JsonDocument document = JsonDocument.create(id, jsonObject);
+	        	if(!bucket.exists(id)){
 	        		bucket.insert(document);
 	        	}else{
 	        		 LOG.debug("Document already exist in bucket, skipping");

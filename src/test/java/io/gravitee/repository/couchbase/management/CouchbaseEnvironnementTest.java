@@ -36,7 +36,7 @@ import com.couchbase.client.java.env.CouchbaseEnvironment;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { CouchbaseEnvironnementConfiguration.class })
-@ActiveProfiles("test")
+@ActiveProfiles("test-env")
 public class CouchbaseEnvironnementTest {
 	private final static String KEY_PREFIX= "management.couchbase.";
 

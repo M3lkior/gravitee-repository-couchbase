@@ -2,6 +2,6 @@
 management.couchbase.hosts: localhost:27017
 management.couchbase.bucketname: gravitee
 management.couchbase.bucketpassword: test
-management.couchbase.connectTimeout: 120000
-management.couchbase.queryTimeout: 120000
-management.couchbase.kvTimeout: 15000
+#management.couchbase.connectTimeout: 120000
+#management.couchbase.queryTimeout: 120000
+management.couchbase.kvTimeout: 30000
