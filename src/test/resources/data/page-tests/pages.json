@@ -1,0 +1,25 @@
+[
+	{
+		"_id" : "page1",
+		"_class" : "io.gravitee.repository.couchbase.management.internal.model.PageCouchbase",
+		"createdAt"  : 1439022010903 ,
+		"name" : "markdown1",
+		"type" : "MARKDOWN",
+		"content" : "azdzadazazdazzdzedezfzefzefzefzefzefzef",
+		"order" : "0",
+		"api" : "api1",
+		"published"  : true
+    },
+
+	{
+		"_id" : "page2",
+		"_class" : "io.gravitee.repository.couchbase.management.internal.model.PageCouchbase",
+		"name" : "markdown2",
+		"type" : "MARKDOWN",
+		"content" : "# Gravitee Management Webui",
+		"createdAt"  : 1439022010883 ,
+		"order" : "1",
+		"api" : "api1",
+		"published"  : false
+	}
+]

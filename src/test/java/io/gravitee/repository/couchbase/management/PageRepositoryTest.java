@@ -68,65 +68,53 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
     }
 
     @Test
-    //TODO
     public void findByIdTest() {
         try {
             Optional<Page> page = pageRepository.findById("page1");
             Assert.assertTrue(page.isPresent());
-            Assert.assertTrue("RAML".equals(page.get().getType()));
+            Assert.assertEquals("Type not equals", "MARKDOWN" ,page.get().getType().toString());
         } catch (Exception e) {
-            logger.error("Error while finding event event1", e);
-            Assert.fail("Error while finding event event1");
+            logger.error("Error while finding page page1", e);
+            Assert.fail("Error while finding page page1");
         }
     }
 
     @Test
-    //TODO
     public void findByApi() {
         try {
             String apiId = "api1";
             Collection<Page> pages = pageRepository.findByApi(apiId);
-            Assert.assertTrue(2 == pages.size());
+            Assert.assertEquals("Invalid number of pages found", 2,pages.size());
             Optional<Page> page = pages.stream().sorted((e1, e2) -> e1.getCreatedAt().compareTo(e2.getCreatedAt())).findFirst();
             Assert.assertTrue(page.isPresent());
-            Assert.assertTrue("page1".equals(page.get().getId()));
+            Assert.assertTrue("page2".equals(page.get().getId()));
         } catch (Exception e) {
-            logger.error("Error while finding event by api", e);
-            Assert.fail("Error while finding event by api");
+            logger.error("Error while finding pages by api", e);
+            Assert.fail("Error while finding pages by api");
         }
     }
     
     @Test
-    //TODO
     public void findPublishedByApi() {
         try {
             String apiId = "api1";
             Collection<Page> pages = pageRepository.findPublishedByApi(apiId);
-            Assert.fail();
-//            Assert.assertTrue(2 == pages.size());
-//            Optional<Page> page = pages.stream().sorted((e1, e2) -> e1.getCreatedAt().compareTo(e2.getCreatedAt())).findFirst();
-//            Assert.assertTrue(page.isPresent());
-//            Assert.assertTrue("page1".equals(page.get().getId()));
+            Assert.assertEquals("Invalid number of pages found", 1,pages.size());
         } catch (Exception e) {
-            logger.error("Error while finding event by api", e);
-            Assert.fail("Error while finding event by api");
+            logger.error("Error while finding published pages by api", e);
+            Assert.fail("Error while finding published pages by api");
         }
     }
     
     @Test
-    //TODO
     public void findMaxPageOrderByApi() {
         try {
             String apiId = "api1";
-           Integer maxOrder = pageRepository.findMaxPageOrderByApi(apiId);
-            Assert.fail();
-//            Assert.assertTrue(2 == pages.size());
-//            Optional<Page> page = pages.stream().sorted((e1, e2) -> e1.getCreatedAt().compareTo(e2.getCreatedAt())).findFirst();
-//            Assert.assertTrue(page.isPresent());
-//            Assert.assertTrue("page1".equals(page.get().getId()));
+           int maxOrder = pageRepository.findMaxPageOrderByApi(apiId);
+           Assert.assertEquals("Invalid max page order found",1, maxOrder);
         } catch (Exception e) {
-            logger.error("Error while finding event by api", e);
-            Assert.fail("Error while finding event by api");
+            logger.error("Error while finding max page order by api", e);
+            Assert.fail("Error while finding max page order by api");
         }
     }
     
