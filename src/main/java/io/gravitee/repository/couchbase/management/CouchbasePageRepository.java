@@ -48,7 +48,7 @@ public class CouchbasePageRepository implements PageRepository {
 	public Collection<Page> findPublishedByApi(String apiId) throws TechnicalException {
 		logger.debug("Find published pages by api {}", apiId);
 
-		List<PageCouchbase> pages = internalPageRepo.findByApi(apiId);
+		List<PageCouchbase> pages = internalPageRepo.findByApiAndPublishedTrue(apiId);
 		Set<Page> res = mapper.collection2set(pages, PageCouchbase.class, Page.class);
 
 		logger.debug("Find published pages by api {} - Done", apiId);
@@ -136,7 +136,8 @@ public class CouchbasePageRepository implements PageRepository {
 	@Override
 	public Integer findMaxPageOrderByApi(String apiId) throws TechnicalException {
 		try{
-			return internalPageRepo.findFirstByApiOrderByOrderDesc(apiId);
+			List<PageCouchbase> pages = internalPageRepo.findByApiOrderByOrderDesc(apiId);
+			return pages.get(0).getOrder();
 		}catch(Exception e){
 			logger.error("An error occured when searching max order page for api name [{}]", apiId, e);
 			throw new TechnicalException("An error occured when searching max order page for api name");

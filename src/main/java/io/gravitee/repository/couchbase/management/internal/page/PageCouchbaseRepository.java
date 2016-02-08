@@ -23,8 +23,9 @@ import io.gravitee.repository.couchbase.management.internal.model.PageCouchbase;
 public interface PageCouchbaseRepository extends CouchbaseRepository<PageCouchbase, String>, PageCouchbaseRepositoryCustom {
 
 	List<PageCouchbase> findByApi(String apiName);
+	List<PageCouchbase> findByApiAndPublishedTrue(String apiName);
 
 	List<PageCouchbase> findIsPublishedByApi(String apiName);
-	int findFirstByApiOrderByOrderDesc(String apiId);
-	//int findFirstOrderByApiMaxPageOrderByApi(String apiId);
+
+	List<PageCouchbase> findByApiOrderByOrderDesc(String apiId);
 }
