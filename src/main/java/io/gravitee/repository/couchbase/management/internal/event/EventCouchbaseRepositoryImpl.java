@@ -42,7 +42,7 @@ public class EventCouchbaseRepositoryImpl implements EventCouchbaseRepositoryCus
 	private final static String PROPERTIES_PREFIX_FIELD= "properties.";
     @Autowired
     private CouchbaseTemplate cbTemplate;
-
+    
     @Override
     public Collection<EventCouchbase> findByProperty(String key, String value) {
     	JsonObject parameters = JsonObject.create().put("value", value);
@@ -66,7 +66,7 @@ public class EventCouchbaseRepositoryImpl implements EventCouchbaseRepositoryCus
 			}catch(DocumentDoesNotExistException e){
 				logger.info("Counter for Event doesn't exit, creating one");
 				JsonLongDocument apikeyCounterDocument = JsonLongDocument.create(EVENT_COUNTER_ID, 1L);
-				cbTemplate.insert(apikeyCounterDocument);
+				bucket.insert(apikeyCounterDocument);
 			}
 		return String.format(EVENT_ID_PATTERN,indexValue );
 	}

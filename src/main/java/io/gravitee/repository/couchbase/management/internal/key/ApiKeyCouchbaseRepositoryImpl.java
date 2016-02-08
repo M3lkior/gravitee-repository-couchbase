@@ -44,7 +44,7 @@ public class ApiKeyCouchbaseRepositoryImpl implements ApiKeyCouchbaseRepositoryC
 			}catch(DocumentDoesNotExistException e){
 				logger.info("Counter for Apikey doesn't exit, creating one");
 				JsonLongDocument apikeyCounterDocument = JsonLongDocument.create(API_KEY_COUNTER_ID, 1L);
-				cbTemplate.insert(apikeyCounterDocument);
+				bucket.insert(apikeyCounterDocument);
 			}
 		return String.format(API_KEY_PATTERN,indexValue );
 	}

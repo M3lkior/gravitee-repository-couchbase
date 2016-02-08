@@ -214,7 +214,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 		user.setLastname(userCb.getLastname());
 		user.setPassword(userCb.getPassword());
 		user.setUpdatedAt(userCb.getUpdatedAt());
-		user.setRoles(new HashSet<>(userCb.getRoles()));
+		user.setRoles( userCb.getRoles() != null ? new HashSet<>(userCb.getRoles()) : new HashSet<>());
 		return user;
 	}
 
