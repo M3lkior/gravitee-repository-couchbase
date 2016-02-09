@@ -1,6 +1,8 @@
-
+#-------------
+#create a couchbase bucket gravitee_test with flush mode ON
+#-------------
 management.couchbase.hosts: localhost:27017
-management.couchbase.bucketname: gravitee
+management.couchbase.bucketname: gravitee_test
 management.couchbase.bucketpassword: test
 #management.couchbase.connectTimeout: 120000
 #management.couchbase.queryTimeout: 120000
