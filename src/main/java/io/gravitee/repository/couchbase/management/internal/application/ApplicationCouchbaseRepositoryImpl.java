@@ -42,6 +42,8 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 	private final static String MEMBER_FIELD = "member";
 	private final static String MEMBERS_USER_FIELD = MEMBER_FIELD + ".`user`";
 	private final static String MEMBERS_TYPE_FIELD = MEMBER_FIELD + ".type";
+	private final static String CLASS_FIELD_VALUE = ApplicationCouchbase.class.getName();
+	private final static String CLASS_FIELD = "_class";
 	@Autowired
 	private CouchbaseTemplate cbTemplate;
 
@@ -49,7 +51,9 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 	public Collection<ApplicationCouchbase> findByUser(String username, MembershipType membershipType) {
 		JsonObject parameters = JsonObject.create();
 		WherePath baseStatement = N1qlUtils.createSelectFromForEntity(cbTemplate.getCouchbaseBucket().name());
-		
+		//workaroung because spring-data not include _class criteria in his build query
+		Expression baseExpression = Expression.x(CLASS_FIELD).eq(Expression.x("$class"));
+		parameters.put("class", CLASS_FIELD_VALUE);
 		Expression memberExpression = null;
 		if (username != null) {
 			parameters.put("username",username);
@@ -66,7 +70,7 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 			}
 		}
 		
-		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(memberExpression), parameters);
+		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(baseExpression.and(memberExpression)), parameters);
 		return cbTemplate.findByN1QL(query, ApplicationCouchbase.class);
 	}
 
