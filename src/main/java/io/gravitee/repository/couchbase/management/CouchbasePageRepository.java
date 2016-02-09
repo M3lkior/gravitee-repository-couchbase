@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import io.gravitee.repository.couchbase.management.internal.model.PageCouchbase;
 import io.gravitee.repository.couchbase.management.internal.page.PageCouchbaseRepository;
@@ -137,7 +138,7 @@ public class CouchbasePageRepository implements PageRepository {
 	public Integer findMaxPageOrderByApi(String apiId) throws TechnicalException {
 		try{
 			List<PageCouchbase> pages = internalPageRepo.findByApiOrderByOrderDesc(apiId);
-			return pages.get(0).getOrder();
+			return CollectionUtils.isEmpty(pages) ? 0 : pages.get(0).getOrder();
 		}catch(Exception e){
 			logger.error("An error occured when searching max order page for api name [{}]", apiId, e);
 			throw new TechnicalException("An error occured when searching max order page for api name");

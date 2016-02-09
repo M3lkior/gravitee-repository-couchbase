@@ -16,9 +16,9 @@
 package io.gravitee.repository.couchbase.management.internal.page;
 
 /**
- * @author Titouan COMPIEGNE
+ * 
+ * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
+ *
  */
 public interface PageCouchbaseRepositoryCustom {
-
-	//int findMaxPageOrderByApi(String apiId);
 }
