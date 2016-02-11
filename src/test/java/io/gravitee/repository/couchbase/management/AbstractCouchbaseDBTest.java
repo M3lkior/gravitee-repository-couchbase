@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.couchbase.core.CouchbaseTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,7 @@ import com.couchbase.client.java.query.N1qlQuery;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestRepositoryConfiguration.class })
+@TestPropertySource("classpath:gravitee.yml")
 @ActiveProfiles("test")
 public abstract class AbstractCouchbaseDBTest {
 
@@ -75,7 +77,6 @@ public abstract class AbstractCouchbaseDBTest {
     
     
     @Before
-    @Transactional
     public void setup() throws Exception {
         LOG.info("Setup of Couchbase Cluster for Integration Test");
         final File file = new File(AbstractCouchbaseDBTest.class.getResource(getTestCasesPath()).toURI());

@@ -36,7 +36,7 @@ import io.gravitee.repository.management.model.User;
 import io.gravitee.repository.management.model.Visibility;
 
 @Transactional
-@TransactionConfiguration(defaultRollback= false)
+@TransactionConfiguration(defaultRollback= true)
 public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 
 	private final static Logger logger = LoggerFactory.getLogger(ApiRepositoryTest.class);
@@ -94,8 +94,11 @@ public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 	}
 
 	@Test
+	//@Rollback
 	public void findByIdTest() {
 		try {
+			
+			logger.info("findByIdTest");
 			Optional<Api> optional = apiRepository.findById("findByNameOk");
 			Assert.assertTrue("Find api by name return no result ", optional.isPresent());
 		} catch (Exception e) {

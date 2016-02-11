@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.couchbase.client.java.env.CouchbaseEnvironment;
@@ -36,6 +37,7 @@ import com.couchbase.client.java.env.CouchbaseEnvironment;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { CouchbaseEnvironnementConfiguration.class })
+@TestPropertySource("classpath:gravitee-environnement.yml")
 @ActiveProfiles("test-env")
 public class CouchbaseEnvironnementTest {
 	private final static String KEY_PREFIX= "management.couchbase.";

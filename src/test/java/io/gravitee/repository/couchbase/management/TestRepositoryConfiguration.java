@@ -17,7 +17,6 @@ package io.gravitee.repository.couchbase.management;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 
 import io.gravitee.repository.Scope;
@@ -25,7 +24,6 @@ import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 
 @Configuration
 @ComponentScan
-@PropertySource("classpath:gravitee.yml")
 @EnableCouchbaseRepositories
 public class TestRepositoryConfiguration extends AbstractRepositoryConfiguration {
 

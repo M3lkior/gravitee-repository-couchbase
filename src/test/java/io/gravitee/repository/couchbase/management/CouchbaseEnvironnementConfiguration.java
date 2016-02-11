@@ -17,14 +17,12 @@ package io.gravitee.repository.couchbase.management;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 
 @Configuration
 @ComponentScan
-@PropertySource("classpath:gravitee-environnement.yml")
 public class CouchbaseEnvironnementConfiguration extends AbstractRepositoryConfiguration {
 
 	@Override
