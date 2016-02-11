@@ -33,7 +33,7 @@
 
 	<properties>
 	<gravitee-repository.version>0.6.0-SNAPSHOT</gravitee-repository.version>
-		<spring.data.couchbase.version>2.0.0.RC1</spring.data.couchbase.version> 
+		<spring.data.couchbase.version>2.0.0.RELEASE</spring.data.couchbase.version> 
 		<dozer.version>5.4.0</dozer.version>
 		<snakeyaml.version>1.15</snakeyaml.version>
 	</properties>
