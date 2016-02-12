@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import io.gravitee.repository.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +32,14 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.core.mapping.Document;
+import org.springframework.data.couchbase.core.query.Consistency;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import com.couchbase.client.java.env.CouchbaseEnvironment;
 
+import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.management.mapper.GraviteeDozerMapper;
 import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
 import io.gravitee.repository.couchbase.management.transaction.NoTransactionManager;
@@ -71,6 +72,8 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 	  protected CouchbaseEnvironment getEnvironment() {
 		return couchbaseEnvironment;
 	  }
+	
+	
 	
 	
 	@Override
@@ -127,6 +130,14 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
     public AbstractPlatformTransactionManager graviteeTransactionManager() {
         return new NoTransactionManager();
     }
+
+	@Override
+	/**
+	 * Always return up-to-date datas
+	 */
+	protected Consistency getDefaultConsistency() {
+		return Consistency.STRONGLY_CONSISTENT;
+	}
 
 
 }
