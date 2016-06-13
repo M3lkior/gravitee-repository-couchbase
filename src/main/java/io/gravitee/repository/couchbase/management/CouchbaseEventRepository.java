@@ -88,7 +88,7 @@ public class CouchbaseEventRepository implements EventRepository {
             eventCb.setType(event.getType());
             eventCb.setPayload(event.getPayload());
             eventCb.setParentId(event.getParentId());
-
+            eventCb.setUpdatedAt(event.getUpdatedAt());
             EventCouchbase eventMongoUpdated = internalEventRepo.save(eventCb);
             return mapper.map(eventMongoUpdated, Event.class);
         } catch (Exception e) {

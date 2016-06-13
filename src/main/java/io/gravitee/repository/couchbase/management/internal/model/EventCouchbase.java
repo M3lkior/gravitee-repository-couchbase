@@ -96,21 +96,4 @@ public class EventCouchbase extends Auditable{
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
-
-   
-    public enum EventProperties {
-        API_ID("api_id"),
-        ORIGIN("origin"),
-        USERNAME("username");
-
-        private String value;
-
-        EventProperties(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
-    }
 }
