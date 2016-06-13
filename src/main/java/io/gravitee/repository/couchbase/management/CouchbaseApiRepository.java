@@ -30,7 +30,6 @@ import org.springframework.stereotype.Component;
 import io.gravitee.repository.couchbase.management.internal.api.ApiCouchbaseRepository;
 import io.gravitee.repository.couchbase.management.internal.key.ApiKeyCouchbaseRepository;
 import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
-import io.gravitee.repository.couchbase.management.internal.model.ApiKeyCouchbase;
 import io.gravitee.repository.couchbase.management.internal.model.MembershipCouchbase;
 import io.gravitee.repository.couchbase.management.internal.model.UserCouchbase;
 import io.gravitee.repository.couchbase.management.internal.user.UserCouchbaseRepository;
@@ -109,25 +108,6 @@ public class CouchbaseApiRepository implements ApiRepository {
 		return mapApis(internalApiRepo.findByMember(username, membershipType, visibility));
 	}
 
-	@Override
-	public int countByUser(String username, MembershipType membershipType) throws TechnicalException {
-		return internalApiRepo.countByUser(username, membershipType);
-	}
-
-	@Override
-	public Set<Api> findByApplication(String applicationId) throws TechnicalException {
-		List<ApiKeyCouchbase> apiKeys = internalApiKeyRepo.findByApplication(applicationId);
-		Set<Api> apis = new HashSet<Api>();
-		for(ApiKeyCouchbase apikey: apiKeys){
-			Optional<Api> api = findById(apikey.getApi());
-			if(api.isPresent()){
-				apis.add(api.get());
-			}
-		}
-		
-		return apis;
-}
-	
 	@Override
 	public void saveMember(String apiId, String username, MembershipType membershipType) throws TechnicalException {
 		ApiCouchbase api = internalApiRepo.findOne(apiId);

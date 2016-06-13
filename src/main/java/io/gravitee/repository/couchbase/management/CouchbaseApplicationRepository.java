@@ -100,15 +100,6 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 	}
 	
 	@Override
-	public int countByUser(String username, MembershipType membershipType) throws TechnicalException {
-		try{
-			return internalApplicationRepo.countByUser(username, membershipType);
-		}catch(Exception e){
-			throw new TechnicalException("Count by user failed", e);
-		}
-	}
-
-	@Override
 	public void saveMember(String applicationId, String username, MembershipType membershipType) throws TechnicalException {
 		ApplicationCouchbase applicationCb = internalApplicationRepo.findOne(applicationId);
 		UserCouchbase userCb = internalUserRepo.findOne(username);

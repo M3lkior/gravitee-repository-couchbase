@@ -79,17 +79,5 @@ public class UserRepositoryTest extends AbstractCouchbaseDBTest {
 		}
 	}	
 	
-	@Test
-	public void findByEmailTest() {
-		try{
-			Optional<User> user= userRepository.findByEmail("user2@gravitee.io");
-				
-			Assert.assertNotNull("Optional is null", user);
-			Assert.assertTrue("Impossible to find user by email", user.isPresent());
-			
-		}catch(Exception e){
-			logger.error("Error while finding user by email",e);
-			Assert.fail("Error while finding user by email");
-		}
-	}
+	
 }

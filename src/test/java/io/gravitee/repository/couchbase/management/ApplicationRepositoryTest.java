@@ -15,18 +15,19 @@
  */
 package io.gravitee.repository.couchbase.management;
 
-import io.gravitee.repository.management.api.ApplicationRepository;
-import io.gravitee.repository.management.model.Application;
-import io.gravitee.repository.management.model.MembershipType;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import io.gravitee.repository.management.api.ApplicationRepository;
+import io.gravitee.repository.management.model.Application;
+import io.gravitee.repository.management.model.MembershipType;
 
 public class ApplicationRepositoryTest extends AbstractCouchbaseDBTest {
 
@@ -187,15 +188,6 @@ public class ApplicationRepositoryTest extends AbstractCouchbaseDBTest {
 		}
 	}
 	
-	@Test
-	public void countByUserTest(){
-		try {
-			int nbApplications = applicationRepository.countByUser("findByUserTest", null);
-			Assert.assertEquals("Invalid application result in countByUser", 1, nbApplications);
-		} catch (Exception e) {
-			logger.error("Error while counting application by user", e);
-			Assert.fail("Error while counting application by user");
-		}
-	}
+
 
 }

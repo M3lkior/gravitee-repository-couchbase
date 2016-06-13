@@ -94,17 +94,7 @@ public class PageRepositoryTest extends AbstractCouchbaseDBTest {
         }
     }
     
-    @Test
-    public void findPublishedByApi() {
-        try {
-            String apiId = "api1";
-            Collection<Page> pages = pageRepository.findPublishedByApi(apiId);
-            Assert.assertEquals("Invalid number of pages found", 1,pages.size());
-        } catch (Exception e) {
-            logger.error("Error while finding published pages by api", e);
-            Assert.fail("Error while finding published pages by api");
-        }
-    }
+   
     
     @Test
     public void findMaxPageOrderByApi() {

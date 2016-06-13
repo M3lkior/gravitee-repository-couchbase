@@ -46,17 +46,6 @@ public class CouchbasePageRepository implements PageRepository {
 
 
 	@Override
-	public Collection<Page> findPublishedByApi(String apiId) throws TechnicalException {
-		logger.debug("Find published pages by api {}", apiId);
-
-		List<PageCouchbase> pages = internalPageRepo.findByApiAndPublishedTrue(apiId);
-		Set<Page> res = mapper.collection2set(pages, PageCouchbase.class, Page.class);
-
-		logger.debug("Find published pages by api {} - Done", apiId);
-		return res;
-	}
-
-	@Override
 	public Collection<Page> findByApi(String apiId) throws TechnicalException {
 		logger.debug("Find pages by api {}", apiId);
 

@@ -156,16 +156,7 @@ public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 		}
 	}
 	
-	@Test
-	public void countApisByUserTest() {
-		try {
-			int nbApis = apiRepository.countByUser("findByUserTest", MembershipType.USER);
-			Assert.assertEquals("Invalid api result in countByUser", 4, nbApis);
-		} catch (Exception e) {
-			logger.error("Error while counting api by user", e);
-			Assert.fail("Error while counting api by user");
-		}
-	}
+	
 
 	@Test
 	public void deleteApiTest() {
@@ -181,15 +172,5 @@ public class ApiRepositoryTest extends AbstractCouchbaseDBTest {
 		}
 	}
 	
-	@Test
-	public void findByApplicationTest() {
-		try {
-			Set<Api> apis = apiRepository.findByApplication("application-sample");
-			Assert.assertNotNull(apis);
-			Assert.assertEquals(2, apis.size());
-		} catch (Exception e) {
-			logger.error("Error while finding api by application", e);
-			Assert.fail("Error while finding api by application");
-		}
-	}
+	
 }
