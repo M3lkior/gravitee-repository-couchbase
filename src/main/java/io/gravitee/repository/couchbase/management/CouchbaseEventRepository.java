@@ -84,6 +84,7 @@ public class CouchbaseEventRepository implements EventRepository {
         }
 
         try {
+        	eventCb.setProperties(event.getProperties());
             eventCb.setType(event.getType());
             eventCb.setPayload(event.getPayload());
             eventCb.setParentId(event.getParentId());
