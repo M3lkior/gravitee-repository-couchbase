@@ -40,6 +40,8 @@ public class UserCouchbase extends Auditable {
     private String lastname;
     @Field
     private List<String> roles;
+    @Field
+    private String picture;
 
     public String getName() {
         return name;
@@ -110,4 +112,12 @@ public class UserCouchbase extends Auditable {
         sb.append('}');
         return sb.toString();
     }
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 }

@@ -82,13 +82,14 @@ public class CouchbaseUserRepository implements UserRepository {
 	}
 
 	@Override
-	public Optional<User> findByEmail(String email) throws TechnicalException {
-		logger.debug("Find users by email [{}]", email);
+	public User update(User user) throws TechnicalException {
+		UserCouchbase userCb = internalUserRepo.findOne(user.getUsername());
 
-		UserCouchbase userMongo = internalUserRepo.findByEmail(email);
-		User res = mapper.map(userMongo, User.class);
+		// Update, but don't change invariant other creation information
+		userCb.setPicture(user.getPicture());
 
-		logger.debug("Find users by email [{}] - Done", email);
-		return Optional.ofNullable(res);
+		UserCouchbase userUpdated = internalUserRepo.save(userCb);
+		return mapper.map(userUpdated, User.class);
 	}
+
 }
