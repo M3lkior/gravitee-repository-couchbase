@@ -16,13 +16,15 @@
 package io.gravitee.repository.couchbase;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 
 import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 
 @ComponentScan("io.gravitee.repository.couchbase.management")
-@EnableCouchbaseRepositories
+@EnableCouchbaseRepositories(basePackages={"io.gravitee.repository.couchbase.management.internal"})
+@Configuration
 public class CouchbaseTestRepositoryConfiguration extends AbstractRepositoryConfiguration {
 
 	@Override

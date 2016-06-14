@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,6 +46,7 @@ public class CouchbaseEnvironnementTest {
     private static Logger LOG = LoggerFactory.getLogger(CouchbaseEnvironnementTest.class);
     
     @Autowired
+    @Qualifier("managementCouchbase")
     CouchbaseEnvironment couchbaseEnvironment;
     
     @Autowired
