@@ -24,7 +24,6 @@ import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 
 @ComponentScan("io.gravitee.repository.couchbase.management")
 @EnableCouchbaseRepositories(basePackages={"io.gravitee.repository.couchbase.management.internal"})
-@Configuration
 public class CouchbaseTestRepositoryConfiguration extends AbstractRepositoryConfiguration {
 
 	@Override

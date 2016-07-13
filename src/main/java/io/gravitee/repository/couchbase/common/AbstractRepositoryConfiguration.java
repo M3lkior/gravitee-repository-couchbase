@@ -78,7 +78,7 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 	
 	@Override
 	protected List<String> getBootstrapHosts() {
-		String hostsAsString = environment.getProperty(getScope() + ".couchbase.hosts", "gravitee");
+		String hostsAsString = environment.getProperty(getScope() + ".couchbase.hosts");
     	return Arrays.asList(StringUtils.commaDelimitedListToStringArray(hostsAsString));
 	}
 
