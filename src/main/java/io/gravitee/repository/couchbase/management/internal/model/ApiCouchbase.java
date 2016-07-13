@@ -48,6 +48,8 @@ public class ApiCouchbase extends Auditable {
 
     private Date deployedAt;
     
+    private String picture;
+    
     public String getId() {
         return id;
     }
@@ -145,6 +147,14 @@ public class ApiCouchbase extends Auditable {
 
 	public void setDeployedAt(Date deployedAt) {
 		this.deployedAt = deployedAt;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	
