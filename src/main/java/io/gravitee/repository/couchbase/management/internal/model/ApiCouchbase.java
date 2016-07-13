@@ -16,6 +16,7 @@
 package io.gravitee.repository.couchbase.management.internal.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,6 +46,8 @@ public class ApiCouchbase extends Auditable {
 
     private List<MembershipCouchbase> members = new ArrayList<>();
 
+    private Date deployedAt;
+    
     public String getId() {
         return id;
     }
@@ -134,6 +137,14 @@ public class ApiCouchbase extends Auditable {
 
 	public void setVisibility(Visibility visibility) {
 		this.visibility = visibility;
+	}
+
+	public Date getDeployedAt() {
+		return deployedAt;
+	}
+
+	public void setDeployedAt(Date deployedAt) {
+		this.deployedAt = deployedAt;
 	}
 
 	

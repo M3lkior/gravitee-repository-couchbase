@@ -92,7 +92,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 		apiCb.setDefinition(api.getDefinition());
 		apiCb.setVisibility(api.getVisibility());
 		apiCb.setVersion(api.getVersion());
-		
+		apiCb.setDeployedAt(api.getDeployedAt());
 		ApiCouchbase applicationCbUpdated = internalApiRepo.save(apiCb);
 		return mapApi(applicationCbUpdated);
 	}
