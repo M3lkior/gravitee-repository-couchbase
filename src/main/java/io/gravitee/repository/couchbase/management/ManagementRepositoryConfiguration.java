@@ -15,13 +15,12 @@
  */
 package io.gravitee.repository.couchbase.management;
 
+import io.gravitee.repository.Scope;
+import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
-
-import io.gravitee.repository.Scope;
-import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 
 @Configuration
 @ComponentScan
@@ -29,13 +28,12 @@ import io.gravitee.repository.couchbase.common.AbstractRepositoryConfiguration;
 @Profile("!test")
 public class ManagementRepositoryConfiguration extends AbstractRepositoryConfiguration {
 
+	static {
+		System.out.println("JE NE DEVRAIS PAS ETRE ICI !");
+	}
+
 	@Override
 	protected String getScope() {
 		return Scope.MANAGEMENT.getName();
 	}
-
-
-	
-
-	
 }

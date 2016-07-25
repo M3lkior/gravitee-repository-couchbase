@@ -17,152 +17,131 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>io.gravitee</groupId>
-		<artifactId>gravitee-parent</artifactId>
-		<version>5</version>
-	</parent>
+    <parent>
+        <groupId>io.gravitee</groupId>
+        <artifactId>gravitee-parent</artifactId>
+        <version>5</version>
+    </parent>
 
-	<groupId>io.gravitee.repository</groupId>
-	<artifactId>gravitee-repository-couchbase</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
-	<name>Gravitee IO - API Management - Repository CouchBase</name>
+    <groupId>io.gravitee.repository</groupId>
+    <artifactId>gravitee-repository-couchbase</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>Gravitee IO - API Management - Repository CouchBase</name>
 
-	<properties>
-		<gravitee-repository.version>0.13.0</gravitee-repository.version>
-		<spring.data.couchbase.version>2.1.1.RELEASE</spring.data.couchbase.version> 
-		<dozer.version>5.4.0</dozer.version>
-		<snakeyaml.version>1.15</snakeyaml.version>
-		<gravitee-repository-test.version>0.1.0</gravitee-repository-test.version>
-		<maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-		
-	</properties>
+    <properties>
+        <gravitee-repository.version>0.12.0</gravitee-repository.version>
+        <spring.data.couchbase.version>2.1.1.RELEASE</spring.data.couchbase.version>
+        <dozer.version>5.4.0</dozer.version>
+        <snakeyaml.version>1.15</snakeyaml.version>
+        <gravitee-repository-test.version>0.3.0-SNAPSHOT</gravitee-repository-test.version>
+        <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
 
-	<dependencies>
-		<!-- Gravitee dependencies -->
-		<dependency>
-			<groupId>io.gravitee.repository</groupId>
-			<artifactId>gravitee-repository</artifactId>
-			<version>${gravitee-repository.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    </properties>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
+    <dependencies>
+        <!-- Gravitee dependencies -->
+        <dependency>
+            <groupId>io.gravitee.repository</groupId>
+            <artifactId>gravitee-repository</artifactId>
+            <version>${gravitee-repository.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- Spring dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-couchbase</artifactId>
-			<version>${spring.data.couchbase.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
 
-		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-			<version>${dozer.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <!-- Spring dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-couchbase</artifactId>
+            <version>${spring.data.couchbase.version}</version>
+        </dependency>
 
-		<!-- Test dependencies -->
-		
- 	<dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
             <groupId>io.gravitee.repository</groupId>
             <artifactId>gravitee-repository-test</artifactId>
             <version>${gravitee-repository-test.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
-	<!-- 	<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		  <groupId>commons-io</groupId>
-		  <artifactId>commons-io</artifactId>
-		  <version>2.4</version>
-		  <scope>test</scope>
-		</dependency>
-		
-		 <dependency>
-		  <groupId>ch.qos.logback</groupId>
-		  <artifactId>logback-classic</artifactId>
-		  <version>${logback.version}</version>
-		  <scope>test</scope>
-		 </dependency>
-		
-		 <dependency>
-		  <groupId>ch.qos.logback</groupId>
-		  <artifactId>logback-core</artifactId>
-		  <version>${logback.version}</version>
-		  <scope>test</scope>
-		 </dependency>
-		 
-		 <dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>${snakeyaml.version}</version>
-			<scope>test</scope>
-		</dependency> -->
-	</dependencies>
 
-	<build>
-	<resources>
- 			<resource>
- 				<directory>src/main/resources</directory>
- 				<filtering>true</filtering>
- 			</resource>
- 		</resources>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<appendAssemblyId>false</appendAssemblyId>
-					<descriptors>
-						<descriptor>src/main/assembly/plugin-assembly.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-plugin-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/assembly/plugin-assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-plugin-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -174,21 +153,15 @@
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
-						<configuration>
+                        <configuration>
                             <includeGroupIds>io.gravitee.repository</includeGroupIds>
                             <includeArtifactIds>gravitee-repository-test</includeArtifactIds>
                             <includeClassifiers>tests</includeClassifiers>
                             <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			 <!-- <plugin>
-		        <groupId>org.stuartgunter</groupId>
-		        <artifactId>couchbase-maven-plugin</artifactId>
-		        <version>1.0.0</version>
-		      </plugin> -->
-		</plugins>
-	</build>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

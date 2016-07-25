@@ -50,7 +50,7 @@ public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnviron
      * @see <a href="http://docs.couchbase.com/developer/java-2.1/env-config.html">env-config</a>
      * @return
      */
-    public CouchbaseEnvironment build() {
+    private CouchbaseEnvironment build() {
     	DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment.builder();
 
     	//Bootstrapping options

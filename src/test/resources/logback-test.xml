@@ -10,8 +10,8 @@
 		<appender-ref ref="STDOUT" />
 	</logger>
 
-	<logger name="io.gravitee" level="DEBUG" />
-	<logger name="com.couchbase" level="INFO" />
+	<logger name="io.gravitee.repository" level="DEBUG" />
+	<logger name="com.couchbase" level="DEBUG" />
 	<logger name="org.springframework" level="INFO" />
 
 	<!-- Strictly speaking, the level attribute is not necessary since -->

@@ -15,19 +15,17 @@
  */
 package io.gravitee.repository.couchbase;
 
+import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlQuery;
+import io.gravitee.repository.Scope;
+import io.gravitee.repository.config.TestRepositoryInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.data.couchbase.core.CouchbaseTemplate;
-
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.query.Index;
-import com.couchbase.client.java.query.N1qlQuery;
-
-import io.gravitee.repository.Scope;
-import io.gravitee.repository.config.TestRepositoryInitializer;
 
 /**
  * @author Azize Elamrani (azize dot elamrani at gmail dot com)
@@ -36,15 +34,21 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
 
     private static final Logger LOG = LoggerFactory.getLogger(CouchbaseTestRepositoryInitializer.class);
 
+    static {
+        System.out.println("JE SUIS ICI " + CouchbaseTestRepositoryInitializer.class);
+    }
+
     @Autowired
     private CouchbaseTemplate couchbaseTemplate;
+
     @Autowired
     @Qualifier("couchbaseBucket")
-    Bucket bucket;
+    private Bucket bucket;
+
     @Autowired
     private Environment environment;
+
     public void setUp() {
-    	
     	LOG.debug("ENV ? {}", environment.getProperty(Scope.MANAGEMENT.getName() + ".couchbase.hosts", "gravitee"));
 
     	couchbaseTemplate.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
