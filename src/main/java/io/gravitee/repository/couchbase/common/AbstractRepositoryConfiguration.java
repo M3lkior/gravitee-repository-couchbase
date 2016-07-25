@@ -51,15 +51,10 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
     @Autowired
     private Environment environment;
 
-    @Bean(name = "managementCouchbase")
-    public CouchbaseEnvironmentFactory couchbaseEnvironmentFactory() {
-        return new CouchbaseEnvironmentFactory(Scope.MANAGEMENT.getName());
-    }
-
     @Override
     protected CouchbaseEnvironment getEnvironment() {
         try {
-            return couchbaseEnvironmentFactory().getObject();
+            return new CouchbaseEnvironmentFactory(environment, Scope.MANAGEMENT.getName()).get().build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -124,6 +119,6 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
      * Always return up-to-date datas
      */
     protected Consistency getDefaultConsistency() {
-        return Consistency.DEFAULT_CONSISTENCY;
+        return Consistency.STRONGLY_CONSISTENT;
     }
 }

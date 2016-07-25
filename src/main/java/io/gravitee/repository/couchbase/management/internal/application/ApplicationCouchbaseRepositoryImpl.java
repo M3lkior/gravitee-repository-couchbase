@@ -93,4 +93,16 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 		
 		return result.iterator().next().value().getInt(CountFragment.COUNT_ALIAS);
 	}
+
+	@Override
+	public Iterable<ApplicationCouchbase> findAll() {
+		JsonObject parameters = JsonObject.create();
+		WherePath baseStatement = N1qlUtils.createSelectFromForEntity(cbTemplate.getCouchbaseBucket().name());
+		//workaroung because spring-data not include _class criteria in his build query
+		Expression baseExpression = Expression.x(CLASS_FIELD).eq(Expression.x("$class"));
+		parameters.put("class", CLASS_FIELD_VALUE);
+
+		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(baseExpression), parameters);
+		return cbTemplate.findByN1QL(query, ApplicationCouchbase.class);
+	}
 }

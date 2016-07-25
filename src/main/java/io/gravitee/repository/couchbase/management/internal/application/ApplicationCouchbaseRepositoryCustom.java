@@ -35,4 +35,6 @@ public interface ApplicationCouchbaseRepositoryCustom {
      * @return
      */
 	int countByUser(String username, MembershipType membershipType);
+
+	Iterable<ApplicationCouchbase> findAll();
 }

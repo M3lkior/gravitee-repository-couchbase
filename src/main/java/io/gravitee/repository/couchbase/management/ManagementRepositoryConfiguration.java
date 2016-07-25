@@ -28,10 +28,6 @@ import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepos
 @Profile("!test")
 public class ManagementRepositoryConfiguration extends AbstractRepositoryConfiguration {
 
-	static {
-		System.out.println("JE NE DEVRAIS PAS ETRE ICI !");
-	}
-
 	@Override
 	protected String getScope() {
 		return Scope.MANAGEMENT.getName();

@@ -15,13 +15,10 @@
  */
 package io.gravitee.repository.couchbase.common;
 
-import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import java.util.concurrent.TimeUnit;
@@ -31,18 +28,18 @@ import java.util.concurrent.TimeUnit;
  * Factory use to build {@link DefaultCouchbaseEnvironment} thanks to gravitee.yml properties file
  * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
  */
-public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnvironment> {
+public class CouchbaseEnvironmentFactory {
 
 	private final static String PREFIX_FORMAT = "%s.couchbase.";
 	
     private final Logger logger = LoggerFactory.getLogger(CouchbaseEnvironmentFactory.class);
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     private final String propertyPrefix;
 
-    public CouchbaseEnvironmentFactory(String propertyPrefix) {
+    public CouchbaseEnvironmentFactory(Environment environment, String propertyPrefix) {
+        this.environment = environment;
         this.propertyPrefix = String.format(PREFIX_FORMAT, propertyPrefix);
     }
     
@@ -50,7 +47,7 @@ public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnviron
      * @see <a href="http://docs.couchbase.com/developer/java-2.1/env-config.html">env-config</a>
      * @return
      */
-    private CouchbaseEnvironment build() {
+    public DefaultCouchbaseEnvironment.Builder get() {
     	DefaultCouchbaseEnvironment.Builder builder = DefaultCouchbaseEnvironment.builder();
 
     	//Bootstrapping options
@@ -159,7 +156,7 @@ public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnviron
         if(responseBufferSize != null)
         	builder.responseBufferSize(responseBufferSize);
         
-        return builder.build();
+        return builder;
     }
 
     private String readPropertyValue(String propertyName) {
@@ -174,20 +171,5 @@ public class CouchbaseEnvironmentFactory implements FactoryBean<CouchbaseEnviron
         T value = environment.getProperty(propertyName, propertyType, defaultValue);
         logger.debug("Read property {}: {}", propertyName, value);
         return value;
-    }
-
-    @Override
-    public CouchbaseEnvironment getObject() throws Exception {
-        return build();
-    }
-
-    @Override
-    public Class<?> getObjectType() {
-        return CouchbaseEnvironment.class;
-    }
-
-    @Override
-    public boolean isSingleton() {
-        return true;
     }
 }
