@@ -15,6 +15,7 @@
  */
 package io.gravitee.repository.couchbase.common;
 
+import com.couchbase.client.java.env.CouchbaseEnvironment;
 import io.gravitee.repository.Scope;
 import io.gravitee.repository.couchbase.management.mapper.GraviteeDozerMapper;
 import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
@@ -53,6 +54,16 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
     @Bean(name = "managementCouchbase")
     public CouchbaseEnvironmentFactory couchbaseEnvironmentFactory() {
         return new CouchbaseEnvironmentFactory(Scope.MANAGEMENT.getName());
+    }
+
+    @Override
+    protected CouchbaseEnvironment getEnvironment() {
+        try {
+            return couchbaseEnvironmentFactory().getObject();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     protected abstract String getScope();
@@ -113,6 +124,6 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
      * Always return up-to-date datas
      */
     protected Consistency getDefaultConsistency() {
-        return Consistency.STRONGLY_CONSISTENT;
+        return Consistency.DEFAULT_CONSISTENCY;
     }
 }

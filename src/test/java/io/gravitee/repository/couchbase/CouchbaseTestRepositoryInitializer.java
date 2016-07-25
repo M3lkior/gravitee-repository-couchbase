@@ -34,10 +34,6 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
 
     private static final Logger LOG = LoggerFactory.getLogger(CouchbaseTestRepositoryInitializer.class);
 
-    static {
-        System.out.println("JE SUIS ICI " + CouchbaseTestRepositoryInitializer.class);
-    }
-
     @Autowired
     private CouchbaseTemplate couchbaseTemplate;
 
