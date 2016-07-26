@@ -56,21 +56,14 @@ public class EventCouchbaseRepositoryImpl implements EventCouchbaseRepositoryCus
 		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(baseExpression.and(propertyExpression)), parameters);
 		return cbTemplate.findByN1QL(query, EventCouchbase.class);
     }
-    
-  
 
 	@Override
 	public String getIdForEvent() {
 		Bucket bucket = cbTemplate.getCouchbaseBucket();
-		Long indexValue = 1L;
-		try{
-			JsonLongDocument longId = bucket.counter(EVENT_COUNTER_ID, 1);
-			indexValue = longId.content();
-			}catch(DocumentDoesNotExistException e){
-				logger.info("Counter for Event doesn't exit, creating one");
-				JsonLongDocument apikeyCounterDocument = JsonLongDocument.create(EVENT_COUNTER_ID, 1L);
-				bucket.insert(apikeyCounterDocument);
-			}
-		return String.format(EVENT_ID_PATTERN,indexValue );
+
+		JsonLongDocument counterDoc = bucket.counter(EVENT_COUNTER_ID, 1, 1);
+		Long counter = counterDoc.content();
+
+		return String.format(EVENT_ID_PATTERN, counter);
 	}
 }

@@ -22,7 +22,7 @@ import io.gravitee.repository.couchbase.management.internal.model.UserCouchbase;
 
 public interface UserCouchbaseRepository extends CouchbaseRepository<UserCouchbase, String> {
 
-	UserCouchbase findByName(String username);
+	UserCouchbase findByUsername(String username);
 	
 	UserCouchbase findByEmail(String email);
 

@@ -155,7 +155,8 @@ public class CouchbaseEnvironmentFactory {
         	builder.requestBufferSize(requestBufferSize);
         if(responseBufferSize != null)
         	builder.responseBufferSize(responseBufferSize);
-        
+
+        builder.queryEnabled(true);
         return builder;
     }
 

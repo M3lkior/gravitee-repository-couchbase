@@ -15,18 +15,6 @@
  */
 package io.gravitee.repository.couchbase.management;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.dozer.util.IteratorUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import io.gravitee.repository.couchbase.management.internal.api.ApiCouchbaseRepository;
 import io.gravitee.repository.couchbase.management.internal.key.ApiKeyCouchbaseRepository;
 import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
@@ -36,11 +24,13 @@ import io.gravitee.repository.couchbase.management.internal.user.UserCouchbaseRe
 import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
 import io.gravitee.repository.exceptions.TechnicalException;
 import io.gravitee.repository.management.api.ApiRepository;
-import io.gravitee.repository.management.model.Api;
-import io.gravitee.repository.management.model.Membership;
-import io.gravitee.repository.management.model.MembershipType;
-import io.gravitee.repository.management.model.User;
-import io.gravitee.repository.management.model.Visibility;
+import io.gravitee.repository.management.model.*;
+import org.dozer.util.IteratorUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author David BRASSELY (brasseld at gmail.com)
@@ -117,7 +107,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 		Membership membership = getMember(apiId, username);
 		if (membership == null) {
 			MembershipCouchbase member = new MembershipCouchbase();
-			member.setUser(user.getName());
+			member.setUser(user.getUsername());
 			member.setType(membershipType);
 			member.setCreatedAt(new Date());
 			member.setUpdatedAt(member.getCreatedAt());
@@ -188,7 +178,7 @@ public class CouchbaseApiRepository implements ApiRepository {
 
 	private User mapUser(final UserCouchbase userCb) {
 		final User user = new User();
-		user.setUsername(userCb.getName());
+		user.setUsername(userCb.getUsername());
 		user.setCreatedAt(userCb.getCreatedAt());
 		user.setEmail(userCb.getEmail());
 		user.setFirstname(userCb.getFirstname());

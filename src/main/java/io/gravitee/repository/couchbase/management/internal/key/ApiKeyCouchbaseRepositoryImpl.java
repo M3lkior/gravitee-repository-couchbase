@@ -37,15 +37,10 @@ public class ApiKeyCouchbaseRepositoryImpl implements ApiKeyCouchbaseRepositoryC
 	@Override
 	public String getIdForApiKey() {
 		Bucket bucket = cbTemplate.getCouchbaseBucket();
-		Long indexValue = 1L;
-		try{
-			JsonLongDocument longId = bucket.counter(API_KEY_COUNTER_ID, 1);
-			indexValue = longId.content();
-			}catch(DocumentDoesNotExistException e){
-				logger.info("Counter for Apikey doesn't exit, creating one");
-				JsonLongDocument apikeyCounterDocument = JsonLongDocument.create(API_KEY_COUNTER_ID, 1L);
-				bucket.insert(apikeyCounterDocument);
-			}
-		return String.format(API_KEY_PATTERN,indexValue );
+
+		JsonLongDocument longId = bucket.counter(API_KEY_COUNTER_ID, 1, 1);
+		Long indexValue = longId.content();
+
+		return String.format(API_KEY_PATTERN, indexValue);
 	}
 }

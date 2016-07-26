@@ -49,7 +49,7 @@ public class CouchbaseUserRepository implements UserRepository {
 	public Optional<User> findByUsername(String username) throws TechnicalException {
 		logger.debug("Find user by name user [{}]", username);
 
-		UserCouchbase user = internalUserRepo.findOne(username);
+		UserCouchbase user = internalUserRepo.findByUsername(username);
 		User res = mapper.map(user, User.class);
 
 		logger.debug("Find user by name user [{}] - Done", username);

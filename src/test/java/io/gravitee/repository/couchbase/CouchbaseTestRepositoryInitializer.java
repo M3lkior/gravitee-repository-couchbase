@@ -16,7 +16,6 @@
 package io.gravitee.repository.couchbase;
 
 import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.query.Index;
 import com.couchbase.client.java.query.N1qlQuery;
 import io.gravitee.repository.Scope;
@@ -39,9 +38,6 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
     private CouchbaseTemplate couchbaseTemplate;
 
     @Autowired
-    private CouchbaseEnvironment couchbaseEnvironment;
-
-    @Autowired
     @Qualifier("couchbaseBucket")
     private Bucket bucket;
 
@@ -56,6 +52,6 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
 
     public void tearDown() {
         LOG.info("Dropping database...");
-//        bucket.bucketManager().flush();
+        bucket.bucketManager().flush();
     }
 }

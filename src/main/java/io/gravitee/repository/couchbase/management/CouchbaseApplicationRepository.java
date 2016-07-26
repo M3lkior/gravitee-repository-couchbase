@@ -107,7 +107,7 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 		Membership membership = getMember(applicationId, username);
 		if (membership == null) {
 			MembershipCouchbase memberCb = new MembershipCouchbase();
-			memberCb.setUser(userCb.getName());
+			memberCb.setUser(userCb.getUsername());
 			memberCb.setType(membershipType);
 			memberCb.setCreatedAt(new Date());
 			memberCb.setUpdatedAt(memberCb.getCreatedAt());
@@ -166,7 +166,7 @@ public class CouchbaseApplicationRepository implements ApplicationRepository {
 
 	private User mapUser(final UserCouchbase userCb) {
 		final User user = new User();
-		user.setUsername(userCb.getName());
+		user.setUsername(userCb.getUsername());
 		user.setCreatedAt(userCb.getCreatedAt());
 		user.setEmail(userCb.getEmail());
 		user.setFirstname(userCb.getFirstname());

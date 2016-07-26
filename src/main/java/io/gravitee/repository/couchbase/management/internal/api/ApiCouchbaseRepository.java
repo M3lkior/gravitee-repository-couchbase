@@ -21,9 +21,8 @@ import org.springframework.data.repository.CrudRepository;
 import io.gravitee.repository.couchbase.management.internal.model.ApiCouchbase;
 
 public interface ApiCouchbaseRepository extends CrudRepository<ApiCouchbase, String>, ApiCouchbaseRepositoryCustom {
-		@Override
-		  @Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter}")
-		  Iterable<ApiCouchbase> findAll();
+
+    @Override
+    @Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter}")
+    Iterable<ApiCouchbase> findAll();
 }
-
-

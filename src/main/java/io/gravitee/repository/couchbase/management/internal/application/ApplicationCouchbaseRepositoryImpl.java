@@ -15,16 +15,6 @@
  */
 package io.gravitee.repository.couchbase.management.internal.application;
 
-import static com.couchbase.client.java.query.Select.select;
-import static com.couchbase.client.java.query.dsl.functions.AggregateFunctions.count;
-
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.couchbase.core.CouchbaseTemplate;
-import org.springframework.data.couchbase.repository.query.CountFragment;
-import org.springframework.data.couchbase.repository.query.support.N1qlUtils;
-
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryResult;
@@ -32,9 +22,17 @@ import com.couchbase.client.java.query.dsl.Expression;
 import com.couchbase.client.java.query.dsl.functions.Collections;
 import com.couchbase.client.java.query.dsl.path.AsPath;
 import com.couchbase.client.java.query.dsl.path.WherePath;
-
 import io.gravitee.repository.couchbase.management.internal.model.ApplicationCouchbase;
 import io.gravitee.repository.management.model.MembershipType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.couchbase.core.CouchbaseTemplate;
+import org.springframework.data.couchbase.repository.query.CountFragment;
+import org.springframework.data.couchbase.repository.query.support.N1qlUtils;
+
+import java.util.Collection;
+
+import static com.couchbase.client.java.query.Select.select;
+import static com.couchbase.client.java.query.dsl.functions.AggregateFunctions.count;
 
 
 public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseRepositoryCustom {
@@ -92,17 +90,5 @@ public class ApplicationCouchbaseRepositoryImpl implements ApplicationCouchbaseR
 		N1qlQueryResult result = cbTemplate.queryN1QL(query);
 		
 		return result.iterator().next().value().getInt(CountFragment.COUNT_ALIAS);
-	}
-
-	@Override
-	public Iterable<ApplicationCouchbase> findAll() {
-		JsonObject parameters = JsonObject.create();
-		WherePath baseStatement = N1qlUtils.createSelectFromForEntity(cbTemplate.getCouchbaseBucket().name());
-		//workaroung because spring-data not include _class criteria in his build query
-		Expression baseExpression = Expression.x(CLASS_FIELD).eq(Expression.x("$class"));
-		parameters.put("class", CLASS_FIELD_VALUE);
-
-		N1qlQuery query = N1qlQuery.parameterized(baseStatement.where(baseExpression), parameters);
-		return cbTemplate.findByN1QL(query, ApplicationCouchbase.class);
 	}
 }

@@ -29,7 +29,7 @@ public class UserCouchbase extends Auditable {
 
     @Id
     @Field
-    private String name;
+    private String username;
     @Field
     private String email;
     @Field
@@ -43,12 +43,12 @@ public class UserCouchbase extends Auditable {
     @Field
     private String picture;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -96,19 +96,19 @@ public class UserCouchbase extends Auditable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCouchbase user = (UserCouchbase) o;
-        return Objects.equals(name, user.name);
+        return Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(username);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append(" email='").append(email).append(",\'");
-        sb.append(" username='").append(name).append("\'");
+        sb.append(" username='").append(username).append("\'");
         sb.append('}');
         return sb.toString();
     }
