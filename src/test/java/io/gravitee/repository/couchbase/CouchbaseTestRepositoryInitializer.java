@@ -15,18 +15,25 @@
  */
 package io.gravitee.repository.couchbase;
 
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.env.CouchbaseEnvironment;
-import com.couchbase.client.java.query.Index;
-import com.couchbase.client.java.query.N1qlQuery;
-import io.gravitee.repository.Scope;
-import io.gravitee.repository.config.TestRepositoryInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.data.couchbase.core.CouchbaseTemplate;
+
+import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.Cluster;
+import com.couchbase.client.java.bucket.BucketType;
+import com.couchbase.client.java.cluster.BucketSettings;
+import com.couchbase.client.java.cluster.ClusterManager;
+import com.couchbase.client.java.cluster.DefaultBucketSettings;
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+import com.couchbase.client.java.query.Index;
+import com.couchbase.client.java.query.N1qlQuery;
+
+import io.gravitee.repository.Scope;
+import io.gravitee.repository.config.TestRepositoryInitializer;
 
 /**
  * @author Azize Elamrani (azize dot elamrani at gmail dot com)
@@ -35,11 +42,20 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
 
     private static final Logger LOG = LoggerFactory.getLogger(CouchbaseTestRepositoryInitializer.class);
 
+    private final static String COUCHBASE_HOST_KEY = "%s.couchbase.hosts";
+    private final static String COUCHBASE_CLUSTER_USER_KEY = "%s.couchbase.clustermanager.username";
+    private final static String COUCHBASE_CLUSTER_PASSWORD_KEY = "%s.couchbase.clustermanager.password";
+    private final static String COUCHBASE_BUCKET_NAME_KEY = "%s.couchbase.bucketname";
+    private final static String COUCHBASE_BUCKET_PASSWORD_KEY = "%s.couchbase.bucketpassword";
+
     @Autowired
     private CouchbaseTemplate couchbaseTemplate;
 
     @Autowired
-    private CouchbaseEnvironment couchbaseEnvironment;
+    private Cluster couchbaseCluster;
+    
+    @Autowired
+    private CouchbaseEnvironment couchbaseEnvironement;
 
     @Autowired
     @Qualifier("couchbaseBucket")
@@ -47,15 +63,50 @@ public class CouchbaseTestRepositoryInitializer implements TestRepositoryInitial
 
     @Autowired
     private Environment environment;
+    
+    
 
     public void setUp() {
-    	LOG.debug("ENV ? {}", environment.getProperty(Scope.MANAGEMENT.getName() + ".couchbase.hosts", "gravitee"));
-
+    	LOG.debug("ENV ? {}", environment.getProperty(String.format(COUCHBASE_HOST_KEY, Scope.MANAGEMENT.getName())));
+    	BucketSettings bucketSettings = new DefaultBucketSettings.Builder()
+    		    .type(BucketType.COUCHBASE)
+    		    .name(environment.getProperty(String.format(COUCHBASE_BUCKET_NAME_KEY, Scope.MANAGEMENT.getName())))
+    		    .password("test")
+    		    .quota(100)
+    		    //.replicas(1)
+    		    .build();
+    	 ClusterManager cm = getClusterManager();
+    	 LOG.info("Inserting bucket for test...");
+    	 if(!cm.hasBucket(environment.getProperty(String.format(COUCHBASE_BUCKET_NAME_KEY, Scope.MANAGEMENT.getName())))){
+    		 cm.insertBucket(bucketSettings);
+    		 couchbaseCluster.openBucket(environment.getProperty(String.format(COUCHBASE_BUCKET_NAME_KEY, Scope.MANAGEMENT.getName())),environment.getProperty(String.format(COUCHBASE_BUCKET_PASSWORD_KEY, Scope.MANAGEMENT.getName())));
+    	 }
+    	 
+    	
+    	try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	couchbaseTemplate.queryN1QL( N1qlQuery.simple(Index.createPrimaryIndex().on(bucket.name())));
     }
 
     public void tearDown() {
-        LOG.info("Dropping database...");
+        
+       ClusterManager cm = getClusterManager();
+       LOG.info("Dropping bucket...");
+       cm.removeBucket(environment.getProperty(String.format(COUCHBASE_BUCKET_NAME_KEY, Scope.MANAGEMENT.getName())));
 //        bucket.bucketManager().flush();
+    }
+    
+    private ClusterManager getClusterManager(){
+    	LOG.info("Cluster info :");
+    	LOG.info(environment.getProperty(String.format(COUCHBASE_CLUSTER_USER_KEY, Scope.MANAGEMENT.getName())));
+    	LOG.info(environment.getProperty(String.format(COUCHBASE_CLUSTER_PASSWORD_KEY, Scope.MANAGEMENT.getName())));
+    	return couchbaseCluster.clusterManager(
+        		environment.getProperty(String.format(COUCHBASE_CLUSTER_USER_KEY, Scope.MANAGEMENT.getName())),
+        		environment.getProperty(String.format(COUCHBASE_CLUSTER_PASSWORD_KEY, Scope.MANAGEMENT.getName()))
+        	);
     }
 }

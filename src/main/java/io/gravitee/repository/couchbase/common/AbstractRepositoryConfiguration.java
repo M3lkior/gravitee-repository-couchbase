@@ -15,11 +15,11 @@
  */
 package io.gravitee.repository.couchbase.common;
 
-import com.couchbase.client.java.env.CouchbaseEnvironment;
-import io.gravitee.repository.Scope;
-import io.gravitee.repository.couchbase.management.mapper.GraviteeDozerMapper;
-import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
-import io.gravitee.repository.couchbase.management.transaction.NoTransactionManager;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +36,12 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.couchbase.client.java.env.CouchbaseEnvironment;
+
+import io.gravitee.repository.Scope;
+import io.gravitee.repository.couchbase.management.mapper.GraviteeDozerMapper;
+import io.gravitee.repository.couchbase.management.mapper.GraviteeMapper;
+import io.gravitee.repository.couchbase.management.transaction.NoTransactionManager;
 
 /**
  * @author Ludovic DUSSART (ludovic dot dussart dot pro at gmail dot com)
@@ -76,7 +78,7 @@ public abstract class AbstractRepositoryConfiguration extends AbstractCouchbaseC
 
     @Override
     protected String getBucketPassword() {
-        return environment.getProperty(getScope() + ".couchbase.bucketpassword", "");
+        return environment.getProperty(getScope() + ".couchbase.bucketpassword", "test");
     }
 
     @Override
